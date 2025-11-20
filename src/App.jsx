@@ -99,7 +99,7 @@ export default function App() {
     const q = query.toLowerCase();
     const matchesQuery =
       !query ||
-      [e.english, e.french, e.japanese, ...(e.locations || [])]
+      [e.latin,e.english, e.french, e.japanese, ...(e.locations || [])]
         .join(' ')
         .toLowerCase()
         .includes(q);
