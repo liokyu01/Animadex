@@ -1,10 +1,10 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Card from './components/Card';
 import EntryForm from './components/EntryForm';
 import { sampleEntries } from './data/SampleEntries';
-import { STORAGE_KEY } from './data/Constants';
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
+import { db } from "./firebase";
 
 export default function App() {
   const [entries, setEntries] = useState([]);
@@ -15,19 +15,24 @@ export default function App() {
   const [editing, setEditing] = useState(null);
 
   useEffect(() => {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
+    // Load entries from Firebase
+    async function loadEntries() {
       try {
-        setEntries(JSON.parse(raw));
-      } catch {
+        const querySnapshot = await getDocs(collection(db, "entries"));
+        if (!querySnapshot.empty) {
+          const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          setEntries(data);
+        } else {
+          // Optional: initialize with sample entries if Firebase empty
+          setEntries(sampleEntries);
+        }
+      } catch (err) {
+        console.error("Error loading entries:", err);
         setEntries(sampleEntries);
       }
-    } else setEntries(sampleEntries);
+    }
+    loadEntries();
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-  }, [entries]);
 
   function openAddForm() {
     setEditing({
@@ -50,9 +55,14 @@ export default function App() {
     setIsFormOpen(true);
   }
 
-  function onDelete(id) {
-    if (!confirm('Delete?')) return;
-    setEntries(list => list.filter(e => e.id !== id));
+  async function onDelete(id) {
+    if (!confirm("Delete?")) return;
+    try {
+      await deleteDoc(doc(db, "entries", id));
+      setEntries(prev => prev.filter(e => e.id !== id));
+    } catch (err) {
+      console.error("Failed to delete:", err);
+    }
   }
 
   function handleImageUpload(file) {
@@ -62,25 +72,37 @@ export default function App() {
     reader.readAsDataURL(file);
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const payload = { ...editing };
-    if (!payload.id) payload.id = Math.random().toString(36).slice(2, 10);
-    if (typeof payload.locations === 'string')
-      payload.locations = payload.locations.split(',').map(x => x.trim());
 
-    setEntries(prev => {
-      const exists = prev.find(p => p.id === payload.id);
-      return exists ? prev.map(p => (p.id === payload.id ? payload : p)) : [payload, ...prev];
-    });
-
-    setIsFormOpen(false);
-    setEditing(null);
+    try {
+      if (!payload.id) {
+        // Add new entry
+        const docRef = await addDoc(collection(db, "entries"), payload);
+        payload.id = docRef.id;
+        setEntries(prev => [payload, ...prev]);
+      } else {
+        // Update existing
+        const docRef = doc(db, "entries", payload.id);
+        await updateDoc(docRef, payload);
+        setEntries(prev => prev.map(e => (e.id === payload.id ? payload : e)));
+      }
+      setIsFormOpen(false);
+      setEditing(null);
+    } catch (err) {
+      console.error("Failed to save entry:", err);
+    }
   }
 
   const filtered = entries.filter(e => {
     const q = query.toLowerCase();
-    const matchesQuery = !query || [e.english, e.french, e.japanese, ...(e.locations || [])].join(' ').toLowerCase().includes(q);
+    const matchesQuery =
+      !query ||
+      [e.english, e.french, e.japanese, ...(e.locations || [])]
+        .join(' ')
+        .toLowerCase()
+        .includes(q);
     const matchesCategory = !categoryFilter || e.category === categoryFilter;
     const matchesCapture = !captureFilter || e.capture === captureFilter;
     return matchesQuery && matchesCategory && matchesCapture;
@@ -112,7 +134,10 @@ export default function App() {
             editing={editing}
             setEditing={setEditing}
             onSubmit={handleSubmit}
-            onCancel={() => setIsFormOpen(false)}
+            onCancel={() => {
+              setIsFormOpen(false);
+              setEditing(null);
+            }}
             handleImageUpload={handleImageUpload}
           />
         )}

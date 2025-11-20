@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { CATEGORIES, CAPTURE_LEVELS } from '../data/constants';
+import { CATEGORIES, CAPTURE_LEVELS } from '../data/Constants';
 
 
 export default function EntryForm({ editing, setEditing, onSubmit, onCancel, handleImageUpload }) {
@@ -8,6 +8,7 @@ return (
 <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
 <form onSubmit={onSubmit} className="bg-white p-6 rounded shadow w-full max-w-xl space-y-3">
 <h2 className="text-xl font-bold">{editing.id ? 'Edit entry' : 'Add entry'}</h2>
+<input type="text" className="border p-2 rounded w-full" placeholder="Scientific name" value={editing.latin} onChange={e => setEditing({...editing, latin:e.target.value})} required />
 <input type="text" className="border p-2 rounded w-full" placeholder="English name" value={editing.english} onChange={e => setEditing({...editing, english:e.target.value})} required />
 <input type="text" className="border p-2 rounded w-full" placeholder="French name" value={editing.french} onChange={e => setEditing({...editing, french:e.target.value})} required />
 <input type="text" className="border p-2 rounded w-full" placeholder="Japanese name" value={editing.japanese} onChange={e => setEditing({...editing, japanese:e.target.value})} required />

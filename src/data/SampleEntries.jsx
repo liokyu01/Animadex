@@ -2,6 +2,7 @@ export const sampleEntries = [
 {
 id: "1",
 image: "",
+latin: "",
 english: "Great Egret",
 french: "Grande aigrette",
 japanese: "ダイサギ",

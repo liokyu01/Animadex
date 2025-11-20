@@ -1,5 +1,5 @@
 import React from 'react';
-import { CATEGORIES, CAPTURE_LEVELS } from '../data/constants';
+import { CATEGORIES, CAPTURE_LEVELS } from '../data/Constants';
 
 
 export default function Header({ query, setQuery, categoryFilter, setCategoryFilter, captureFilter, setCaptureFilter, openAddForm }) {

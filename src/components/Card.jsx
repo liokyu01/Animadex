@@ -11,7 +11,8 @@ alt=""
 className="w-[500px] h-[500px] object-cover"
 />
 <div className="p-4 flex-1 space-y-1">
-<h2 className="text-xl font-semibold">🇬🇧 {entry.english}</h2>
+<h2 className="text-xl font-semibold"> {entry.latin}</h2>
+<p>🇬🇧 {entry.english}</p>
 <p>🇫🇷 {entry.french}</p>
 <p>🇯🇵 {entry.japanese}</p>
 <p className="text-gray-500">
