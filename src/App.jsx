@@ -3,8 +3,9 @@ import Header from './components/Header';
 import Card from './components/Card';
 import EntryForm from './components/EntryForm';
 import { sampleEntries } from './data/SampleEntries';
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
-import { db } from "./firebase";
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc } from "firebase/firestore";
+import { db, auth } from "./firebase"; 
+import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 
 export default function App() {
   const [entries, setEntries] = useState([]);
@@ -13,8 +14,27 @@ export default function App() {
   const [captureFilter, setCaptureFilter] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    // Listen to auth state
+    const unsubscribe = onAuthStateChanged(auth, async (u) => {
+      setUser(u);
+
+      if (u) {
+        try {
+          const adminDoc = await getDoc(doc(db, "admins", u.uid));
+          setIsAdmin(adminDoc.exists());
+        } catch (err) {
+          console.error("Error checking admin status:", err);
+          setIsAdmin(false);
+        }
+      } else {
+        setIsAdmin(false);
+      }
+    });
+
     // Load entries from Firebase
     async function loadEntries() {
       try {
@@ -23,7 +43,6 @@ export default function App() {
           const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
           setEntries(data);
         } else {
-          // Optional: initialize with sample entries if Firebase empty
           setEntries(sampleEntries);
         }
       } catch (err) {
@@ -32,12 +51,19 @@ export default function App() {
       }
     }
     loadEntries();
+
+    return () => unsubscribe();
   }, []);
 
   function openAddForm() {
+    if (!user || !isAdmin) {
+      alert("Only admins can add entries");
+      return;
+    }
     setEditing({
-      id: null,
+      id: `temp-${Date.now()}`, // temporary unique ID for React key
       image: '',
+      latin: '',
       english: '',
       french: '',
       japanese: '',
@@ -51,11 +77,19 @@ export default function App() {
   }
 
   function onEdit(entry) {
+    if (!user || !isAdmin) {
+      alert("Only admins can edit entries");
+      return;
+    }
     setEditing({ ...entry });
     setIsFormOpen(true);
   }
 
   async function onDelete(id) {
+    if (!user || !isAdmin) {
+      alert("Only admins can delete entries");
+      return;
+    }
     if (!confirm("Delete?")) return;
     try {
       await deleteDoc(doc(db, "entries", id));
@@ -74,16 +108,21 @@ export default function App() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (!user || !isAdmin) {
+      alert("Only admins can save entries");
+      return;
+    }
+
     const payload = { ...editing };
 
     try {
-      if (!payload.id) {
+      if (payload.id.startsWith("temp-")) {
         // Add new entry
         const docRef = await addDoc(collection(db, "entries"), payload);
-        payload.id = docRef.id;
+        payload.id = docRef.id; // Replace temp ID with Firebase ID
         setEntries(prev => [payload, ...prev]);
       } else {
-        // Update existing
+        // Update existing entry
         const docRef = doc(db, "entries", payload.id);
         await updateDoc(docRef, payload);
         setEntries(prev => prev.map(e => (e.id === payload.id ? payload : e)));
@@ -108,10 +147,26 @@ export default function App() {
     return matchesQuery && matchesCategory && matchesCapture;
   });
 
+  const provider = new GoogleAuthProvider();
+  const login = () => signInWithPopup(auth, provider).catch(console.error);
+  const logout = () => signOut(auth).catch(console.error);
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Léandre's Animadex (Asia)</h1>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-3xl font-bold">Léandre's Animadex (Asia)</h1>
+          <div>
+            {user ? (
+              <>
+                <span className="mr-2">{user.displayName} {isAdmin && "(Admin)"}</span>
+                <button className="px-3 py-1 bg-red-500 text-white rounded" onClick={logout}>Logout</button>
+              </>
+            ) : (
+              <button className="px-3 py-1 bg-blue-500 text-white rounded" onClick={login}>Login</button>
+            )}
+          </div>
+        </div>
 
         <Header
           query={query}

@@ -11,7 +11,7 @@ export const CATEGORIES = [
 
 export const CAPTURE_LEVELS = [
 { id: "photo", label: "📸 Photo" },
-{ id: "observation", label: "👀 Observation" },
+{ id: "observation", label: "👀 Observed" },
 { id: "tracks", label: "🐾 Tracks" },
 ];
 
