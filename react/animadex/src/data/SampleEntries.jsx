@@ -1,0 +1,14 @@
+export const sampleEntries = [
+{
+id: "1",
+image: "",
+english: "Great Egret",
+french: "Grande aigrette",
+japanese: "ダイサギ",
+category: "bird",
+locations: ["Hyogo, Rokko"],
+capture: "photo",
+date: "2025-11-16",
+notes: "Seen near the port.",
+},
+];
