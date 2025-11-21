@@ -18,10 +18,8 @@ export default function App() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    // Listen to auth state
     const unsubscribe = onAuthStateChanged(auth, async (u) => {
       setUser(u);
-
       if (u) {
         try {
           const adminDoc = await getDoc(doc(db, "admins", u.uid));
@@ -35,7 +33,6 @@ export default function App() {
       }
     });
 
-    // Load entries from Firebase
     async function loadEntries() {
       try {
         const querySnapshot = await getDocs(collection(db, "entries"));
@@ -61,7 +58,7 @@ export default function App() {
       return;
     }
     setEditing({
-      id: `temp-${Date.now()}`, // temporary unique ID for React key
+      id: null,
       image: '',
       latin: '',
       english: '',
@@ -116,17 +113,18 @@ export default function App() {
     const payload = { ...editing };
 
     try {
-      if (payload.id.startsWith("temp-")) {
-        // Add new entry
-        const docRef = await addDoc(collection(db, "entries"), payload);
-        payload.id = docRef.id; // Replace temp ID with Firebase ID
-        setEntries(prev => [payload, ...prev]);
+      if (!payload.id) {
+        const { id, ...payloadWithoutId } = payload;
+        const docRef = await addDoc(collection(db, "entries"), payloadWithoutId);
+        const newEntry = { ...payloadWithoutId, id: docRef.id };
+        setEntries(prev => [newEntry, ...prev]);
       } else {
-        // Update existing entry
+        const { id, ...payloadWithoutId } = payload;
         const docRef = doc(db, "entries", payload.id);
-        await updateDoc(docRef, payload);
+        await updateDoc(docRef, payloadWithoutId);
         setEntries(prev => prev.map(e => (e.id === payload.id ? payload : e)));
       }
+
       setIsFormOpen(false);
       setEditing(null);
     } catch (err) {
@@ -138,7 +136,7 @@ export default function App() {
     const q = query.toLowerCase();
     const matchesQuery =
       !query ||
-      [e.latin,e.english, e.french, e.japanese, ...(e.locations || [])]
+      [e.latin, e.english, e.french, e.japanese, ...(e.locations || [])]
         .join(' ')
         .toLowerCase()
         .includes(q);
@@ -179,23 +177,41 @@ export default function App() {
         />
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map(e => (
-            <Card key={e.id} entry={e} onEdit={onEdit} onDelete={onDelete} />
-          ))}
-        </div>
 
-        {isFormOpen && (
-          <EntryForm
-            editing={editing}
-            setEditing={setEditing}
-            onSubmit={handleSubmit}
-            onCancel={() => {
-              setIsFormOpen(false);
-              setEditing(null);
-            }}
-            handleImageUpload={handleImageUpload}
-          />
-        )}
+          {/* NEW ENTRY FORM for adding */}
+          {editing && editing.id === null && (
+            <div className="md:col-span-2 lg:col-span-3">
+              <EntryForm
+                editing={editing}
+                setEditing={setEditing}
+                onSubmit={handleSubmit}
+                onCancel={() => setEditing(null)}
+                handleImageUpload={handleImageUpload}
+              />
+            </div>
+          )}
+
+          {/* ALL CARDS */}
+          {filtered.map(e => (
+            <React.Fragment key={e.id}>
+              <Card entry={e} onEdit={onEdit} onDelete={onDelete} />
+
+              {/* EDIT FORM under the card */}
+              {editing && editing.id === e.id && (
+                <div className="md:col-span-2 lg:col-span-3">
+                  <EntryForm
+                    editing={editing}
+                    setEditing={setEditing}
+                    onSubmit={handleSubmit}
+                    onCancel={() => setEditing(null)}
+                    handleImageUpload={handleImageUpload}
+                  />
+                </div>
+              )}
+            </React.Fragment>
+          ))}
+
+        </div>
 
         <footer className="mt-8 text-sm text-gray-500">
           Tip: use this project to practice git — create a branch, add a new feature, open a pull request on GitHub.
