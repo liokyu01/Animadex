@@ -152,17 +152,19 @@ export default function App() {
   return (
   <div
     style={{
-      width: "100vw",
+    width: "100vw",           // <- use 100% instead of 100vw
       minHeight: "100vh",
-      padding: "24px",
-      backgroundColor: "#5a1a1aff",
-      //boxSizing: "border-box",
+    boxSizing: "border-box",  // <- include padding in width calculation
+      backgroundColor: "#5a1a1aff",   
     }}
   >
     <div
       style={{
         maxWidth: "1200px",
         margin: "0 auto",
+        width: "100%",        // fills the container minus padding
+        padding: "24px",
+        boxSizing: "border-box",
       }}
     >
       {/* HEADER TOP BAR */}
@@ -237,10 +239,11 @@ export default function App() {
       <div
   style={{
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
     gap: "32px",
     justifyItems: "center",
     boxSizing: "border-box",  // <- add this
+    overflowX: "hidden", // <- prevent horizontal scroll
   }}
 >
         {/* NEW ENTRY FORM */}
