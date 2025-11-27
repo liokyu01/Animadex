@@ -150,73 +150,145 @@ export default function App() {
   const logout = () => signOut(auth).catch(console.error);
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-bold">Léandre's Animadex (Asia)</h1>
-          <div>
-            {user ? (
-              <>
-                <span className="mr-2">{user.displayName} {isAdmin && "(Admin)"}</span>
-                <button className="px-3 py-1 bg-red-500 text-white rounded" onClick={logout}>Logout</button>
-              </>
-            ) : (
-              <button className="px-3 py-1 bg-blue-500 text-white rounded" onClick={login}>Login</button>
-            )}
-          </div>
-        </div>
+  <div
+    style={{
+      padding: "24px",
+      backgroundColor: "#5a1a1aff",
+      minHeight: "100vh",
+    }}
+  >
+    <div
+      style={{
+        maxWidth: "1200px",
+        margin: "0 auto",
+      }}
+    >
+      {/* HEADER TOP BAR */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "16px",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "2rem",
+            fontWeight: "bold",
+          }}
+        >
+          Léandre's Animadex (Asia)
+        </h1>
 
-        <Header
-          query={query}
-          setQuery={setQuery}
-          categoryFilter={categoryFilter}
-          setCategoryFilter={setCategoryFilter}
-          captureFilter={captureFilter}
-          setCaptureFilter={setCaptureFilter}
-          openAddForm={openAddForm}
-        />
+        <div>
+          {user ? (
+            <>
+              <span style={{ marginRight: "8px" }}>
+                {user.displayName} {isAdmin && "(Admin)"}
+              </span>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-          {/* NEW ENTRY FORM for adding */}
-          {editing && editing.id === null && (
-            <div className="md:col-span-2 lg:col-span-3">
-              <EntryForm
-                editing={editing}
-                setEditing={setEditing}
-                onSubmit={handleSubmit}
-                onCancel={() => setEditing(null)}
-                handleImageUpload={handleImageUpload}
-              />
-            </div>
+              <button
+                onClick={logout}
+                style={{
+                  padding: "6px 12px",
+                  backgroundColor: "#ef4444",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                }}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={login}
+              style={{
+                padding: "6px 12px",
+                backgroundColor: "#3b82f6",
+                color: "white",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Login
+            </button>
           )}
-
-          {/* ALL CARDS */}
-          {filtered.map(e => (
-            <React.Fragment key={e.id}>
-              <Card entry={e} onEdit={onEdit} onDelete={onDelete} />
-
-              {/* EDIT FORM under the card */}
-              {editing && editing.id === e.id && (
-                <div className="md:col-span-2 lg:col-span-3">
-                  <EntryForm
-                    editing={editing}
-                    setEditing={setEditing}
-                    onSubmit={handleSubmit}
-                    onCancel={() => setEditing(null)}
-                    handleImageUpload={handleImageUpload}
-                  />
-                </div>
-              )}
-            </React.Fragment>
-          ))}
-
         </div>
-
-        <footer className="mt-8 text-sm text-gray-500">
-          Tip: use this project to practice git — create a branch, add a new feature, open a pull request on GitHub.
-        </footer>
       </div>
+
+      {/* FILTER HEADER */}
+      <Header
+        query={query}
+        setQuery={setQuery}
+        categoryFilter={categoryFilter}
+        setCategoryFilter={setCategoryFilter}
+        captureFilter={captureFilter}
+        setCaptureFilter={setCaptureFilter}
+        openAddForm={openAddForm}
+      />
+
+      {/* GRID SYSTEM */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+          gap: "24px",
+        }}
+      >
+        {/* NEW ENTRY FORM */}
+        {editing && editing.id === null && (
+          <div
+            style={{
+              gridColumn: "1 / -1", // full row
+            }}
+          >
+            <EntryForm
+              editing={editing}
+              setEditing={setEditing}
+              onSubmit={handleSubmit}
+              onCancel={() => setEditing(null)}
+              handleImageUpload={handleImageUpload}
+            />
+          </div>
+        )}
+
+        {/* CARDS */}
+        {filtered.map((e) => (
+          <React.Fragment key={e.id}>
+            <Card entry={e} onEdit={onEdit} onDelete={onDelete} />
+
+            {/* EDIT FORM BELOW CARD */}
+            {editing && editing.id === e.id && (
+              <div style={{ gridColumn: "1 / -1" }}>
+                <EntryForm
+                  editing={editing}
+                  setEditing={setEditing}
+                  onSubmit={handleSubmit}
+                  onCancel={() => setEditing(null)}
+                  handleImageUpload={handleImageUpload}
+                />
+              </div>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
+
+      {/* FOOTER */}
+      <footer
+        style={{
+          marginTop: "32px",
+          fontSize: "0.85rem",
+          color: "#6b7280",
+        }}
+      >
+        You reached the end of the animadex: Now please go outside and find new species!
+      </footer>
     </div>
-  );
+  </div>
+);
+
 }
