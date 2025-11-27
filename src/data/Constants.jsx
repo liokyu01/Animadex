@@ -15,19 +15,19 @@ import tracksIcon from "../assets/icons/tracks.png";
 
 
 export const CATEGORIES = [
-  { id: "bird", label: "Bird", icon: birdIcon },
-  { id: "mammal", label: "Mammal", icon: mammalIcon },
-  { id: "reptile", label: "Reptile", icon: reptileIcon },
-  { id: "amphibian", label: "Amphibian", icon: amphibianIcon },
-  { id: "insect", label: "Insect", icon: insectIcon },
-  { id: "fish", label: "Fish", icon: fishIcon },
-  { id: "other", label: "Other", icon: otherIcon },
+  { id: "bird", label: "Bird", icon: birdIcon, color: "#436b85ff" },
+  { id: "mammal", label: "Mammal", icon: mammalIcon, color: "#9e2424ff" },
+  { id: "reptile", label: "Reptile", icon: reptileIcon, color: "#1d7970ff" },
+  { id: "amphibian", label: "Amphibian", icon: amphibianIcon, color: "#569153ff" },
+  { id: "insect", label: "Insect", icon: insectIcon, color: "#798727ff" },
+  { id: "fish", label: "Fish", icon: fishIcon, color: "#113c80ff" },
+  { id: "other", label: "Other", icon: otherIcon, color: "#9e9e9eff" },
 ];
 
 export const CAPTURE_LEVELS = [
-  { id: 1, label: "observation", icon: observationIcon },
-  { id: 2, label: "photo", icon: photoIcon },
-  { id: 3, label: "tracks", icon: tracksIcon },
+  { label: "observation", icon: observationIcon },
+  { label: "photo", icon: photoIcon },
+  { label: "tracks", icon: tracksIcon },
 ];
 
 export const STORAGE_KEY = "visual_pokedex_entries_v1";

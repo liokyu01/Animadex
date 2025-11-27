@@ -152,9 +152,11 @@ export default function App() {
   return (
   <div
     style={{
+      width: "100vw",
+      minHeight: "100vh",
       padding: "24px",
       backgroundColor: "#5a1a1aff",
-      minHeight: "100vh",
+      //boxSizing: "border-box",
     }}
   >
     <div
