@@ -235,12 +235,14 @@ export default function App() {
 
       {/* GRID SYSTEM */}
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: "24px",
-        }}
-      >
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+    gap: "32px",
+    justifyItems: "center",
+    boxSizing: "border-box",  // <- add this
+  }}
+>
         {/* NEW ENTRY FORM */}
         {editing && editing.id === null && (
           <div
