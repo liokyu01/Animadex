@@ -7,6 +7,9 @@ import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc } from "
 import { db, auth } from "./firebase"; 
 import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 
+
+
+
 export default function App() {
   const [entries, setEntries] = useState([]);
   const [query, setQuery] = useState('');
@@ -16,6 +19,8 @@ export default function App() {
   const [editing, setEditing] = useState(null);
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isBannerVisible, setIsBannerVisible] = useState(true);
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (u) => {
@@ -69,8 +74,12 @@ export default function App() {
       capture: 'photo',
       date: new Date().toISOString().slice(0, 10),
       notes: '',
+      infoLink: '', 
     });
     setIsFormOpen(true);
+    
+    // Scroll to top smoothly
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function onEdit(entry) {
@@ -145,6 +154,16 @@ export default function App() {
     return matchesQuery && matchesCategory && matchesCapture;
   });
 
+  const categoryCounts = {};
+  filtered.forEach(e => {
+    categoryCounts[e.category] = (categoryCounts[e.category] || 0) + 1;
+  });
+
+  const captureCounts = {};
+  filtered.forEach(e => {
+    captureCounts[e.capture] = (captureCounts[e.capture] || 0) + 1;
+  });
+
   const provider = new GoogleAuthProvider();
   const login = () => signInWithPopup(auth, provider).catch(console.error);
   const logout = () => signOut(auth).catch(console.error);
@@ -158,6 +177,70 @@ export default function App() {
       backgroundColor: "#5a1a1aff",   
     }}
   >
+   {/* Sticky banner */}
+      {isBannerVisible && (
+        <div style={{ 
+          position: "sticky", 
+          top: 0, 
+          zIndex: 1000,
+          maxWidth: "1200px",
+          margin: "0 auto",
+          width: "100%",        // fills the container minus padding
+          padding: "16px 100px",
+          boxSizing: "border-box",
+           }}>
+          <Header
+            query={query}
+            setQuery={setQuery}
+            categoryFilter={categoryFilter}
+            setCategoryFilter={setCategoryFilter}
+            captureFilter={captureFilter}
+            setCaptureFilter={setCaptureFilter}
+            openAddForm={openAddForm}
+            categoryCounts={categoryCounts}
+            captureCounts={captureCounts}
+            setIsBannerVisible={setIsBannerVisible}
+          />
+        </div>
+      )}
+
+      {/* Show banner button */}
+      {!isBannerVisible && (
+        <div style={{ padding: "8px", textAlign: "center" }}>
+          <button
+            onClick={() => setIsBannerVisible(true)}
+            style={{
+              position: "sticky", 
+              top: 0, 
+              zIndex: 1000,
+              padding: "6px 12px",
+              borderRadius: "6px",
+              border: "none",
+              cursor: "pointer",
+              backgroundColor: "#2563eb",
+              color: "white",
+              fontWeight: "bold",
+          boxSizing: "border-box",
+            }}
+          >
+            Show Banner
+          </button>
+        </div>
+      )}
+
+
+{/* MAIN CONTENT */}
+<div
+  style={{
+    maxWidth: "1200px",
+    margin: "0 auto",
+    padding: "24px",
+    boxSizing: "border-box",
+  }}
+>
+  {/* Cards, forms, footer */}
+</div>
+
     <div
       style={{
         maxWidth: "1200px",
@@ -182,7 +265,7 @@ export default function App() {
             fontWeight: "bold",
           }}
         >
-          Léandre's Animadex (Asia)
+          Léandre's Animadex
         </h1>
 
         <div>
@@ -223,17 +306,6 @@ export default function App() {
           )}
         </div>
       </div>
-
-      {/* FILTER HEADER */}
-      <Header
-        query={query}
-        setQuery={setQuery}
-        categoryFilter={categoryFilter}
-        setCategoryFilter={setCategoryFilter}
-        captureFilter={captureFilter}
-        setCaptureFilter={setCaptureFilter}
-        openAddForm={openAddForm}
-      />
 
       {/* GRID SYSTEM */}
       <div

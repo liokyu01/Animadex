@@ -25,9 +25,9 @@ export const CATEGORIES = [
 ];
 
 export const CAPTURE_LEVELS = [
-  { label: "observation", icon: observationIcon },
-  { label: "photo", icon: photoIcon },
-  { label: "tracks", icon: tracksIcon },
+  { id: "observation", label: "observation", icon: observationIcon },
+  { id: "photo", label: "photo", icon: photoIcon },
+  { id: "tracks", label: "tracks", icon: tracksIcon },
 ];
 
 export const STORAGE_KEY = "visual_pokedex_entries_v1";

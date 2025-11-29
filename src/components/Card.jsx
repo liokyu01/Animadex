@@ -151,50 +151,70 @@ export default function Card({ entry, onEdit, onDelete, onAdd }) {
         {entry.notes}
       </div>
 
-       {/* ACTION BUTTONS UNDER CARD */}
-      <div
+      {/* ACTION BUTTONS UNDER CARD */}
+    <div
+    style={{
+        marginTop: "12px",
+        display: "flex",
+        gap: "16px",
+        justifyContent: "center",
+        paddingTop: "12px",
+    }}
+    >
+    <button
+        onClick={() => onEdit(entry)}
         style={{
-          marginTop: "12px",
-          display: "flex",
-          gap: "16px",
-          justifyContent: "center",
-          paddingTop: "12px",
+        width: "48px",
+        height: "48px",
+        borderRadius: "12px",
+        border: "3px solid #3b0a0a",
+        backgroundColor: "#f7d438",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "6px",
         }}
-      >
-        <button
-          onClick={() => onEdit(entry)}
-          style={{
-            width: "48px",
-            height: "48px",
-            borderRadius: "12px",
-            border: "3px solid #3b0a0a",
-            backgroundColor: "#f7d438",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "6px",
-          }}
-        >
-          <img src={editIcon} width={24} height={24} alt="Edit" />
-        </button>
+    >
+        <img src={editIcon} width={24} height={24} alt="Edit" />
+    </button>
 
-        <button
-          onClick={() => onDelete(entry.id)}
-          style={{
-            width: "48px",
-            height: "48px",
-            borderRadius: "12px",
-            border: "3px solid #3b0a0a",
-            backgroundColor: "#e63939",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "6px",
-          }}
-        >
-          <img src={deleteIcon} width={24} height={24} alt="Delete" />
-        </button>
-      </div>
+    <button
+        onClick={() => onDelete(entry.id)}
+        style={{
+        width: "48px",
+        height: "48px",
+        borderRadius: "12px",
+        border: "3px solid #3b0a0a",
+        backgroundColor: "#e63939",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "6px",
+        }}
+    >
+        <img src={deleteIcon} width={24} height={24} alt="Delete" />
+    </button>
+
+    <button
+        onClick={() => {
+        if (entry.infoLink) window.open(entry.infoLink, "_blank");
+        }}
+        style={{
+        width: "48px",
+        height: "48px",
+        borderRadius: "12px",
+        border: "3px solid #3b0a0a",
+        backgroundColor: "#3b82f6", // blue for info
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "6px",
+        }}
+    >
+        <img src={questionIcon} width={24} height={24} alt="Info" />
+    </button>
+    </div>
+
     </div>
   );
 }
