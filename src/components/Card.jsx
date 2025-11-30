@@ -1,6 +1,6 @@
 import React from "react";
 import { CATEGORIES, CAPTURE_LEVELS } from "../data/Constants";
-import { darkenHex, lightenHex } from "../utils";
+import { darkenHex, lightenHex } from "../utils/utils";
 import flagUK from "../assets/flags/uk.png";
 import flagFR from "../assets/flags/fr.png";
 import flagJP from "../assets/flags/jp.png";
