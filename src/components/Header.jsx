@@ -133,48 +133,6 @@ export default function Header({
         >
           Hide Banner
         </button>
-
-        <button
-        onClick={downloadEntries}
-        style={{
-            padding: "4px 8px",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-          backgroundColor: "#4b4b4bff", 
-            color: "white",
-            fontSize: "0.8rem",
-            fontWeight: "bold",
-        }}
-      >
-        Download Backup
-      </button>
-
-    <input
-      type="file"
-      accept="application/json"
-      id="backupInput"
-      style={{ display: "none" }}
-      onChange={loadBackup}
-    />
-
-<button
-  onClick={() => document.getElementById("backupInput").click()}
-  style={{
-    padding: "6px 12px",
-    borderRadius: "6px",
-    border: "none",
-    cursor: "pointer",
-    backgroundColor: "#f59e0b", // orange
-    color: "white",
-    fontWeight: "bold",
-    marginLeft: "8px",
-  }}
->
-  Load Backup
-</button>
-
-
       </div>
     </div>
   );

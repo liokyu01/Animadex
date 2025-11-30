@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Card from "./components/Card";
 import EntryForm from "./components/EntryForm";
 import BackupModal from "./components/BackupModal";
+import AdminMenu from "./components/AdminMenu";
 import { sampleEntries } from "./data/SampleEntries";
 import useAuth from "./hooks/useAuth";
 import {
@@ -217,14 +218,33 @@ export default function App() {
       )}
 
       {/* Header top bar */}
-      <div style={{ maxWidth: "1200px", margin: "0 auto", width: "100%", padding: "24px", boxSizing: "border-box" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", width: "100%", padding: "24px", boxSizing: "border-box",textAlign: "center" }}>
+        <div style={{ display: "flex",
+           justifyContent: "space-between", 
+      flexDirection: "row",
+           alignItems: "center",
+            marginBottom: "16px" }}>
           <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>Léandre's Animadex</h1>
           <div>
             {user ? (
               <>
-                <span style={{ marginRight: "8px" }}>{user.displayName} {isAdmin && "(Admin)"}</span>
-                <button onClick={logout} style={{ padding: "6px 12px", backgroundColor: "#ef4444", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}>Logout</button>
+                <span style={{ marginRight: "8px" }}>
+                  {user.displayName} {isAdmin && "(Admin)"}
+                </span>
+                {isAdmin && (
+                  <AdminMenu
+                    downloadEntries={downloadEntries}
+                    loadBackup={loadBackup}
+                  />
+                  
+                )}
+                <button onClick={logout} 
+                style={{ padding: "6px 12px",
+                 backgroundColor: "#ef4444",
+                  color: "white", border: "none",
+                   borderRadius: "6px", 
+                   cursor: "pointer" }}>
+                    Logout</button>
               </>
             ) : (
               <button onClick={login} style={{ padding: "6px 12px", backgroundColor: "#3b82f6", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}>Login</button>
