@@ -3,7 +3,7 @@ import Header from './components/Header';
 import Card from './components/Card';
 import EntryForm from './components/EntryForm';
 import { sampleEntries } from './data/SampleEntries';
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc,setDoc  } from "firebase/firestore";
 import { db, auth } from "./firebase"; 
 import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 
@@ -56,6 +56,84 @@ export default function App() {
 
     return () => unsubscribe();
   }, []);
+
+  function downloadEntries() {
+    const dataStr = JSON.stringify(entries, null, 2); // formaté joliment
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `entries_backup_${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+const [backupProgress, setBackupProgress] = useState({
+  uploading: false,
+  uploaded: 0,
+  total: 0
+});
+
+ async function loadBackup(e) {
+  if (!user || !isAdmin) {
+    alert("Only admins can load backups");
+    return;
+  }
+
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async () => {
+    try {
+      const backupEntries = JSON.parse(reader.result);
+
+      if (!Array.isArray(backupEntries)) {
+        alert("Invalid backup file format");
+        return;
+      }
+
+      setBackupProgress({ uploading: true, uploaded: 0, total: backupEntries.length });
+
+      for (let i = 0; i < backupEntries.length; i++) {
+        const entry = backupEntries[i];
+        const entryRef = entry.id ? doc(db, "entries", entry.id) : null;
+
+        if (entry.id) {
+          const existing = await getDoc(entryRef);
+          const { id, ...payloadWithoutId } = entry;
+          if (existing.exists()) {
+            await updateDoc(entryRef, payloadWithoutId);
+          } else {
+            await setDoc(entryRef, payloadWithoutId);
+          }
+        } else {
+          const { id, ...payloadWithoutId } = entry;
+          await addDoc(collection(db, "entries"), payloadWithoutId);
+        }
+
+        setBackupProgress(prev => ({ ...prev, uploaded: prev.uploaded + 1 }));
+      }
+
+      // Reload entries
+      const querySnapshot = await getDocs(collection(db, "entries"));
+      setEntries(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+      setBackupProgress({ uploading: false, uploaded: 0, total: 0 });
+      alert("Backup loaded successfully!");
+    } catch (err) {
+      console.error("Failed to load backup:", err);
+      alert("Failed to load backup. Check console for details.");
+      setBackupProgress({ uploading: false, uploaded: 0, total: 0 });
+    }
+  };
+  reader.readAsText(file);
+}
+
+
 
   function openAddForm() {
     if (!user || !isAdmin) {
@@ -176,7 +254,58 @@ export default function App() {
     boxSizing: "border-box",  // <- include padding in width calculation
       backgroundColor: "#5a1a1aff",   
     }}
+  >{backupProgress.uploading && (
+  <div
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      backgroundColor: "rgba(0,0,0,0.5)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 2000,
+    }}
   >
+    <div
+      style={{
+        backgroundColor: "#1e5882ff",
+        padding: "24px",
+        borderRadius: "12px",
+        width: "400px",
+        boxSizing: "border-box",
+        textAlign: "center",
+      }}
+    >
+      <h2 style={{ marginBottom: "16px" }}>Uploading Backup</h2>
+      <div
+        style={{
+          width: "100%",
+          height: "20px",
+          backgroundColor: "#e5e7eb",
+          borderRadius: "10px",
+          overflow: "hidden",
+          marginBottom: "8px",
+        }}
+      >
+        <div
+          style={{
+            width: `${(backupProgress.uploaded / backupProgress.total) * 100}%`,
+            height: "100%",
+            backgroundColor: "#2563eb",
+            transition: "width 0.2s",
+          }}
+        />
+      </div>
+      <div>
+        {backupProgress.uploaded} / {backupProgress.total} entries uploaded
+      </div>
+    </div>
+  </div>
+)}
+
    {/* Sticky banner */}
       {isBannerVisible && (
         <div style={{ 
@@ -200,33 +329,42 @@ export default function App() {
             categoryCounts={categoryCounts}
             captureCounts={captureCounts}
             setIsBannerVisible={setIsBannerVisible}
+            downloadEntries = {downloadEntries}
+            loadBackup = {loadBackup}
           />
         </div>
       )}
 
       {/* Show banner button */}
-      {!isBannerVisible && (
-        <div style={{ padding: "8px", textAlign: "center" }}>
-          <button
-            onClick={() => setIsBannerVisible(true)}
-            style={{
-              position: "sticky", 
-              top: 0, 
-              zIndex: 1000,
-              padding: "6px 12px",
-              borderRadius: "6px",
-              border: "none",
-              cursor: "pointer",
-              backgroundColor: "#2563eb",
-              color: "white",
-              fontWeight: "bold",
-          boxSizing: "border-box",
-            }}
-          >
-            Show Banner
-          </button>
-        </div>
-      )}
+{!isBannerVisible && (
+  <div
+    style={{
+      position: "sticky",
+      top: 0,
+      zIndex: 1000,
+      width: "100%",
+      padding: "8px",
+      textAlign: "center",
+      boxSizing: "border-box",
+    }}
+  >
+    <button
+      onClick={() => setIsBannerVisible(true)}
+      style={{
+        padding: "6px 12px",
+        borderRadius: "6px",
+        border: "none",
+        cursor: "pointer",
+        backgroundColor: "#2563eb",
+        color: "white",
+        fontWeight: "bold",
+      }}
+    >
+      Show Banner
+    </button>
+  </div>
+)}
+
 
 
 {/* MAIN CONTENT */}
