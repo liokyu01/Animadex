@@ -1,36 +1,220 @@
-import React from 'react';
-import { CATEGORIES, CAPTURE_LEVELS } from '../data/Constants';
+import React from "react";
+import { CATEGORIES, CAPTURE_LEVELS } from "../data/Constants";
+import { darkenHex, lightenHex } from "../utils/utils";
+import flagUK from "../assets/flags/uk.png";
+import flagFR from "../assets/flags/fr.png";
+import flagJP from "../assets/flags/jp.png";
+import locationIcon from "../assets/icons/location.png";
+import questionIcon from "../assets/icons/question.png";
+import editIcon from "../assets/icons/edit.png";
+import deleteIcon from "../assets/icons/delete.png";
 
+export default function Card({ entry, onEdit, onDelete, onAdd }) {
+  const category = CATEGORIES.find(c => c.id === entry.category);
+  const bgColor = category?.color || "#c91f1fff";
+  const categoryIcon = category?.icon;
+  const darkerBgColor = darkenHex(bgColor, 30);
+  const lighterBgColor = lightenHex(bgColor, 30);
+  const captureIcon = CAPTURE_LEVELS.find(c => c.label === entry.capture)?.icon;
 
-export default function Card({ entry, onEdit, onDelete }) {
-return (
-<div className="bg-white rounded shadow overflow-hidden">
-    <div className="flex flex-col md:flex-row"></div>
+  return (
+    <div
+      style={{
+        borderRadius: "20px",
+        border: "4px solid",
+        borderColor: darkerBgColor,
+        padding: "16px",
+        backgroundColor: bgColor,
+        width: "100%",
+        boxSizing: "border-box", 
+        boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+        margin: "0 auto 32px", // add spacing between cards
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {/* TOP BAR: Latin + Category Icon */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "10px",
+          borderRadius: "12px",
+          backgroundColor: lighterBgColor,
+        }}
+      >
+        <h2 style={{ fontSize: "22px", fontWeight: "bold", marginLeft: "10px" }}>
+          {entry.latin}
+        </h2>
         <img
-        src={entry.image || "https://via.placeholder.com/500"}
-        alt={entry.english || ''}
-        className="object-cover rounded w-full md:w-auto md:max-w-[40vw] flex-shrink-0"
-        style={{ maxHeight: "33vh", maxWidth: "100vw" }}
+          src={categoryIcon || questionIcon}
+          width={32}
+          height={32}
+          style={{ borderRadius: "6px", marginRight: "10px" }}
         />
-        <div className="p-4 flex-1">
-        <h2 className="text-xl font-semibold"> {entry.latin}</h2>
-        <p>🇬🇧 {entry.english}</p>
-        <p>🇫🇷 {entry.french}</p>
-        <p>🇯🇵 {entry.japanese}</p>
-        <p className="text-gray-500">
-        Category: {CATEGORIES.find(c => c.id === entry.category)?.label}
-        </p>
-        <p className="text-gray-500">
-        Capture: {CAPTURE_LEVELS.find(c => c.id === entry.capture)?.label}
-        </p>
-        <p className="text-gray-500">Locations: {entry.locations.join(', ')}</p>
-        <p className="text-gray-400 text-sm">{entry.date}</p>
-        {entry.notes && <p className="text-gray-600 text-sm">📝 {entry.notes}</p>}
-        <div className="flex gap-2 pt-2">
-        <button className="px-3 py-1 bg-yellow-400 rounded" onClick={() => onEdit(entry)}>Edit</button>
-        <button className="px-3 py-1 bg-red-500 text-white rounded" onClick={() => onDelete(entry.id)}>Delete</button>
+      </div>
+
+      {/* IMAGE WRAPPER */}
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          aspectRatio: "1 / 1",
+          overflow: "hidden",
+          borderRadius: "12px",
+          marginBottom: "12px",
+        }}
+      >
+        <img
+          src={entry.image || questionIcon}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
+        {/* OVERLAPPING capture level badge */}
+        <img
+          src={captureIcon || questionIcon}
+          width={40}
+          height={40}
+          style={{
+            position: "absolute",
+            bottom: "8px",
+            right: "8px",
+            background: "rgba(255,255,255,0.85)",
+            padding: "4px",
+            borderRadius: "6px",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
+          }}
+        />
+      </div>
+
+      {/* LANGUAGE GROUP */}
+      <div
+        style={{
+          backgroundColor: lighterBgColor,
+          borderRadius: "10px",
+          padding: "8px 12px",
+          marginBottom: "12px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "4px",
+          fontSize: "14px",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img src={flagUK} width={20} height={20} style={{ marginRight: "8px" }} />
+          <span>{entry.english}</span>
         </div>
-</div>
-</div>
-);
+
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img src={flagFR} width={20} height={20} style={{ marginRight: "8px" }} />
+          <span>{entry.french}</span>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img src={flagJP} width={20} height={20} style={{ marginRight: "8px" }} />
+          <span>{entry.japanese}</span>
+        </div>
+      </div>
+
+      {/* LOCATIONS */}
+      <div
+        style={{
+          marginTop: "8px",
+          marginBottom: "12px",
+          fontSize: "14px",
+          display: "flex",
+          alignItems: "center",
+          backgroundColor: lighterBgColor,
+          padding: "4px 8px",
+          borderRadius: "8px",
+        }}
+      >
+        <img src={locationIcon} width={18} height={18} style={{ marginRight: "8px" }} />
+        <span>{entry.locations.join(", ")}</span>
+      </div>
+
+      {/* NOTES */}
+      <div
+        style={{
+          marginTop: "10px",
+          padding: "10px",
+          borderRadius: "10px",
+          backgroundColor: darkerBgColor,
+          fontSize: "14px",
+          lineHeight: "1.4",
+        }}
+      >
+        {entry.notes}
+      </div>
+
+      {/* ACTION BUTTONS UNDER CARD */}
+    <div
+    style={{
+        marginTop: "12px",
+        display: "flex",
+        gap: "16px",
+        justifyContent: "center",
+        paddingTop: "12px",
+    }}
+    >
+    <button
+        onClick={() => onEdit(entry)}
+        style={{
+        width: "48px",
+        height: "48px",
+        borderRadius: "12px",
+        border: "3px solid #3b0a0a",
+        backgroundColor: "#f7d438",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "6px",
+        }}
+    >
+        <img src={editIcon} width={24} height={24} alt="Edit" />
+    </button>
+
+    <button
+        onClick={() => onDelete(entry.id)}
+        style={{
+        width: "48px",
+        height: "48px",
+        borderRadius: "12px",
+        border: "3px solid #3b0a0a",
+        backgroundColor: "#e63939",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "6px",
+        }}
+    >
+        <img src={deleteIcon} width={24} height={24} alt="Delete" />
+    </button>
+
+    <button
+        onClick={() => {
+        if (entry.infoLink) window.open(entry.infoLink, "_blank");
+        }}
+        style={{
+        width: "48px",
+        height: "48px",
+        borderRadius: "12px",
+        border: "3px solid #3b0a0a",
+        backgroundColor: "#3b82f6", // blue for info
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "6px",
+        }}
+    >
+        <img src={questionIcon} width={24} height={24} alt="Info" />
+    </button>
+    </div>
+
+    </div>
+  );
 }
