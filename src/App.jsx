@@ -25,6 +25,8 @@ export default function App() {
   const [editing, setEditing] = useState(null);
   const [isBannerVisible, setIsBannerVisible] = useState(true);
 
+  const [selectedLanguage, setLanguage] = useState('');
+
   const [backupProgress, setBackupProgress] = useState({
     uploading: false,
     uploaded: 0,
@@ -215,6 +217,8 @@ export default function App() {
             categoryCounts={categoryCounts}
             captureCounts={captureCounts}
             setIsBannerVisible={setIsBannerVisible}
+            selectedLanguage={selectedLanguage}
+            setLanguage={setLanguage}
           />
         </div>
       )}
@@ -275,7 +279,11 @@ export default function App() {
           {/* CARDS */}
           {filtered.map(e => (
             <React.Fragment key={e.id}>
-              <Card entry={e} onEdit={onEdit} onDelete={onDelete} />
+              <Card 
+              entry={e}
+              onEdit={onEdit} 
+              onDelete={onDelete} 
+              selectedLanguage={selectedLanguage}/>
               {editing && editing.id === e.id && (
                 <div style={{ gridColumn: "1 / -1" }}>
                   <EntryForm editing={editing} setEditing={setEditing} onSubmit={handleSubmit} onCancel={() => setEditing(null)} handleImageUpload={handleImageUpload} />

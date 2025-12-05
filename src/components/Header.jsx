@@ -15,7 +15,9 @@ export default function Header({
   openAddForm,
   categoryCounts = {},
   captureCounts = {},
-  setIsBannerVisible
+  setIsBannerVisible,
+    selectedLanguage,
+    setLanguage
 }) {
   return (
     <div
@@ -38,6 +40,8 @@ export default function Header({
           setCategoryFilter = {setCategoryFilter}
           captureFilter = {captureFilter}
           setCaptureFilter = {setCaptureFilter}
+          selectedLanguage = {selectedLanguage}
+          setLanguage = {setLanguage}
         />
       
       <CategoryStats

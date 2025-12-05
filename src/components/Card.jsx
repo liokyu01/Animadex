@@ -1,6 +1,7 @@
 import React from "react";
 import { CATEGORIES, CAPTURE_LEVELS } from "../data/Constants";
 import { darkenHex, lightenHex } from "../utils/utils";
+import flagW from "../assets/flags/world.png";
 import flagUK from "../assets/flags/uk.png";
 import flagFR from "../assets/flags/fr.png";
 import flagJP from "../assets/flags/jp.png";
@@ -9,13 +10,46 @@ import questionIcon from "../assets/icons/question.png";
 import editIcon from "../assets/icons/edit.png";
 import deleteIcon from "../assets/icons/delete.png";
 
-export default function Card({ entry, onEdit, onDelete, onAdd }) {
+export default function Card({ entry, onEdit, onDelete, selectedLanguage }) {
   const category = CATEGORIES.find(c => c.id === entry.category);
   const bgColor = category?.color || "#c91f1fff";
   const categoryIcon = category?.icon;
   const darkerBgColor = darkenHex(bgColor, 30);
   const lighterBgColor = lightenHex(bgColor, 30);
   const captureIcon = CAPTURE_LEVELS.find(c => c.label === entry.capture)?.icon;
+
+  const names = {
+    latin: entry.latin,
+    french: entry.french,
+    english: entry.english,
+    japanese: entry.japanese,
+  };
+
+  const topName =
+  selectedLanguage === "french"   ? entry.french :
+  selectedLanguage === "english"  ? entry.english :
+  selectedLanguage === "local" ? entry.japanese :
+  entry.latin;
+
+  const fullOrder = [
+  { lang: "latin",    value: entry.latin,    flag: flagW }, 
+  { lang: "english",  value: entry.english,  flag: flagUK },
+  { lang: "french",   value: entry.french,   flag: flagFR },
+  { lang: "local", value: entry.japanese, flag: flagJP },
+];
+
+let languageList;
+
+if (selectedLanguage === "latin") {
+  // Case 1 : latin selected → show everything except latin in top, keep below normal
+  languageList = fullOrder.filter(l => l.lang !== "latin");
+} else {
+  // Case 2 : any other selected language
+  languageList = [
+    fullOrder.find(l => l.lang === "latin"), // latin ALWAYS first
+    ...fullOrder.filter(l => l.lang !== "latin" && l.lang !== selectedLanguage),
+  ];
+}
 
   return (
     <div
@@ -45,8 +79,9 @@ export default function Card({ entry, onEdit, onDelete, onAdd }) {
         }}
       >
         <h2 style={{ fontSize: "22px", fontWeight: "bold", marginLeft: "10px" }}>
-          {entry.latin}
+          {topName}
         </h2>
+
         <img
           src={categoryIcon || questionIcon}
           width={32}
@@ -104,7 +139,14 @@ export default function Card({ entry, onEdit, onDelete, onAdd }) {
           fontSize: "14px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center" }}>
+        {languageList.map(item => (
+          <div key={item.lang} style={{ display: "flex", alignItems: "center" }}>
+            <img src={item.flag} width={20} height={20} style={{ marginRight: "8px" }} />
+            <span>{item.value}</span>
+          </div>
+        ))}
+        
+        {/* <div style={{ display: "flex", alignItems: "center" }}>
           <img src={flagUK} width={20} height={20} style={{ marginRight: "8px" }} />
           <span>{entry.english}</span>
         </div>
@@ -117,7 +159,8 @@ export default function Card({ entry, onEdit, onDelete, onAdd }) {
         <div style={{ display: "flex", alignItems: "center" }}>
           <img src={flagJP} width={20} height={20} style={{ marginRight: "8px" }} />
           <span>{entry.japanese}</span>
-        </div>
+        </div> */}
+        
       </div>
 
       {/* LOCATIONS */}

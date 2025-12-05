@@ -7,7 +7,9 @@ export default function Filters({
     categoryFilter,
     setCategoryFilter,
     captureFilter,
-    setCaptureFilter
+    setCaptureFilter,
+    selectedLanguage,
+    setLanguage
 }) {
   return (    
     <div>
@@ -73,8 +75,8 @@ export default function Filters({
         
         {/* Display option */}
         <select
-            //value={captureFilter}
-            //onChange={(e) => setCaptureFilter(e.target.value)}
+            value={selectedLanguage}
+            onChange={(e) => setLanguage(e.target.value)}
             style={{ padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
         >
             <option value="">Default</option>
