@@ -13,6 +13,10 @@ import observationIcon from "../assets/icons/observation.png";
 import photoIcon from "../assets/icons/photo.png";
 import tracksIcon from "../assets/icons/tracks.png";
 
+import flagW from "../assets/flags/world.png";
+import flagUK from "../assets/flags/uk.png";
+import flagFR from "../assets/flags/fr.png";
+import flagJP from "../assets/flags/jp.png";
 
 export const CATEGORIES = [
   { id: "bird", label: "Bird", icon: birdIcon, color: "#436b85ff" },
@@ -36,10 +40,10 @@ export const COUNTRIES = [
 ];
 
 export const NAMING_OPTION = [
-  { id: "latin", label: "Scientific name"},
-  { id: "english", label: "English"},
-  { id: "french", label: "French"},
-  { id: "local", label: "Local"},
+  { id: "latin", label: "Scientific name", flagIcon:flagW},
+  { id: "english", label: "English", flagIcon: flagUK},
+  { id: "french", label: "French", flagIcon: flagFR},
+  { id: "japanese", label: "Local", flagIcon: flagJP},
 ];
 
 export const STORAGE_KEY = "visual_pokedex_entries_v1";

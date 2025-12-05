@@ -25,7 +25,7 @@ export default function App() {
   const [editing, setEditing] = useState(null);
   const [isBannerVisible, setIsBannerVisible] = useState(true);
 
-  const [selectedLanguage, setLanguage] = useState('');
+  const [selectedLanguage, setLanguage] = useState('latin');
 
   const [backupProgress, setBackupProgress] = useState({
     uploading: false,

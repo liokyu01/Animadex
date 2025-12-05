@@ -79,7 +79,7 @@ export default function Filters({
             onChange={(e) => setLanguage(e.target.value)}
             style={{ padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
         >
-            <option value="">Default</option>
+            <option value="latin">Default (Scientific name)</option>
             {NAMING_OPTION.map((c) => (
             <option key={c.id} value={c.id}>
                 {c.label}
