@@ -30,6 +30,18 @@ export const CAPTURE_LEVELS = [
   { id: "tracks", label: "tracks", icon: tracksIcon },
 ];
 
+export const COUNTRIES = [
+  { id: "japan", label: "Japan", flagIcon: "../assets/flags/jp.png"},
+  { id: "singapore", label: "Singapore", flagIcon: "../assets/flags/sg.png"},
+];
+
+export const NAMING_OPTION = [
+  { id: "latin", label: "Scientific name"},
+  { id: "english", label: "English"},
+  { id: "french", label: "French"},
+  { id: "local", label: "Local"},
+];
+
 export const STORAGE_KEY = "visual_pokedex_entries_v1";
 
 export const iconHeight = 20;

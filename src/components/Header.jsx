@@ -1,5 +1,9 @@
 import React from "react";
 import { CATEGORIES, CAPTURE_LEVELS } from "../data/Constants";
+import Filters from "./Filters";
+import CategoryStats from "./CategoryStats";
+import CaptureStats from "./CaptureStats";
+import BannerButtons from "./BannerButtons";
 
 export default function Header({
   query,
@@ -11,9 +15,7 @@ export default function Header({
   openAddForm,
   categoryCounts = {},
   captureCounts = {},
-  setIsBannerVisible,
-  downloadEntries ,
-  loadBackup
+  setIsBannerVisible
 }) {
   return (
     <div
@@ -29,73 +31,18 @@ export default function Header({
         gap: "8px",
       }}
     >
-      {/* FIRST ROW — Filters + Add button */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", alignItems: "center" }}>
-        <input
-          type="text"
-          placeholder="Search names or locations"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          style={{
-            flex: 1,
-            minWidth: "160px",
-            padding: "8px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-          }}
+        <Filters
+          query = {query}
+          setQuery = {setQuery}
+          categoryFilter = {categoryFilter}
+          setCategoryFilter = {setCategoryFilter}
+          captureFilter = {captureFilter}
+          setCaptureFilter = {setCaptureFilter}
         />
-
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          style={{ padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
-        >
-          <option value="">All categories</option>
-          {CATEGORIES.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.label}
-            </option>
-          ))}
-        </select>
-
-        <select
-          value={captureFilter}
-          onChange={(e) => setCaptureFilter(e.target.value)}
-          style={{ padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
-        >
-          <option value="">All capture levels</option>
-          {CAPTURE_LEVELS.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.label}
-            </option>
-          ))}
-        </select>
-
-        <button
-          onClick={openAddForm}
-          style={{
-            padding: "8px 16px",
-            backgroundColor: "#2563eb",
-            color: "white",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
-          + Add
-        </button>
-      </div>
-
-      {/* SECOND ROW — Category counts */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", alignItems: "center", fontSize: "14px" }}>
-        {CATEGORIES.map((c) => (
-          <div key={c.id} style={{ display: "flex", alignItems: "center", gap: "6px", opacity: 0.8 }}>
-            <img src={c.icon} width={20} height={20} alt={c.label} />
-            <span>{categoryCounts[c.id] || 0}</span>
-          </div>
-        ))}
-      </div>
+      
+      <CategoryStats
+        categoryCounts={categoryCounts}
+      />
 
       {/* THIRD ROW — Capture counts + Hide Banner button */}
       <div
@@ -108,31 +55,14 @@ export default function Header({
           fontSize: "14px",
         }}
       >
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", alignItems: "center" }}>
-          {CAPTURE_LEVELS.map((c) => (
-            <div key={c.id} style={{ display: "flex", alignItems: "center", gap: "6px", opacity: 0.8 }}>
-              <img src={c.icon} width={20} height={20} alt={c.label} />
-              <span>{captureCounts[c.id] || 0}</span>
-            </div>
-          ))}
-        </div>
+        <CaptureStats
+        captureCounts = {captureCounts}
+        />
 
-        {/* Hide Banner button on the right side */}
-        <button
-          onClick={() => setIsBannerVisible(false)}
-          style={{
-            padding: "4px 8px",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            backgroundColor: "#ef4444",
-            color: "white",
-            fontSize: "0.8rem",
-            fontWeight: "bold",
-          }}
-        >
-          Hide Banner
-        </button>
+        <BannerButtons
+          openAddForm = {openAddForm}
+          setIsBannerVisible= {setIsBannerVisible}
+        />
       </div>
     </div>
   );

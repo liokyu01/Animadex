@@ -184,13 +184,26 @@ export default function App() {
   // Render
   // --------------------
   return (
-    <div style={{ width: "100vw", minHeight: "100vh", boxSizing: "border-box", backgroundColor: "#5a1a1aff" }}>
+    <div style={{
+       width: "100vw",
+        minHeight: "100vh",
+         boxSizing: "border-box",
+          backgroundColor: "#5a1a1aff"
+      }}>
       {/* Backup progress modal */}
       <BackupModal {...backupProgress} />
 
       {/* Sticky banner */}
       {isBannerVisible && (
-        <div style={{ position: "sticky", top: 0, zIndex: 1000, maxWidth: "1200px", margin: "0 auto", width: "100%", padding: "16px 100px", boxSizing: "border-box" }}>
+        <div style={{
+           position: "sticky",
+           top: 0, 
+           zIndex: 1000, 
+           maxWidth: "1200px", 
+           margin: "0 auto", 
+           width: "100%", 
+           padding: "16px 50px", 
+           boxSizing: "border-box" }}>
           <Header
             query={query}
             setQuery={setQuery}
@@ -202,8 +215,6 @@ export default function App() {
             categoryCounts={categoryCounts}
             captureCounts={captureCounts}
             setIsBannerVisible={setIsBannerVisible}
-            downloadEntries={downloadEntries}
-            loadBackup={loadBackup}
           />
         </div>
       )}
