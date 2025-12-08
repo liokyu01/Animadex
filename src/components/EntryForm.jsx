@@ -1,11 +1,16 @@
-import React, { useRef } from 'react';
-import { CATEGORIES, CAPTURE_LEVELS } from '../data/Constants';
+import React, { useRef } from "react";
+import { CATEGORIES, CAPTURE_LEVELS } from "../data/Constants";
 
-
-export default function EntryForm({ editing, setEditing, onSubmit, onCancel, handleImageUpload }) {
+export default function EntryForm({
+  editing,
+  setEditing,
+  onSubmit,
+  onCancel,
+  handleImageUpload
+}) {
   const fileInputRef = useRef();
 
-  // ---------------- LOCATION HANDLERS ----------------
+  // ---------- LOCATION HANDLERS ----------
   const handleLocationChange = (index, field, value) => {
     const updated = editing.locations.map((loc, i) =>
       i === index ? { ...loc, [field]: value } : loc
@@ -27,76 +32,141 @@ export default function EntryForm({ editing, setEditing, onSubmit, onCancel, han
     });
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
-      <form onSubmit={onSubmit} className="bg-white p-6 rounded shadow w-full max-w-xl space-y-3">
-        <h2 className="text-xl font-bold">{editing.id ? 'Edit entry' : 'Add entry'}</h2>
+  // ---------- BASIC STYLES ----------
+  const fieldStyle = {
+    border: "1px solid #ccc",
+    padding: "8px",
+    borderRadius: "6px",
+  };
 
-        <input
-          type="text"
-          className="border p-2 rounded w-full"
-          placeholder="Scientific name"
-          value={editing.latin}
-          onChange={e => setEditing({ ...editing, latin: e.target.value })}
-          required
+  const buttonStyle = {
+    padding: "8px 12px",
+    borderRadius: "6px",
+    cursor: "pointer"
+  };
+return (
+  <div style={{ width: "100%", display: "flex", justifyContent: "center", marginTop: "20px" }}>
+    <form
+      onSubmit={onSubmit}
+      style={{
+        background: "rgba(0,0,0,0.15)",
+        padding: "20px",
+        borderRadius: "10px",
+        width: "100%",
+        maxWidth: "1100px",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+
+        /* ---- GRID FIX ---- */
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+        gap: "20px",
+        alignItems: "start",
+      }}
+    >
+      {/* TITLE */}
+      <h2
+        style={{
+          gridColumn: "1 / -1",
+          fontSize: "22px",
+          fontWeight: "bold",
+          marginBottom: "10px",
+        }}
+      >
+        {editing.id ? "Edit entry" : "Add entry"}
+      </h2>
+
+      {/* LEFT COLUMN */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+        <input type="text" style={fieldStyle} placeholder="Scientific name"
+          required value={editing.latin}
+          onChange={(e) => setEditing({ ...editing, latin: e.target.value })}
         />
 
-        <input
-          type="text"
-          className="border p-2 rounded w-full"
-          placeholder="English name"
-          value={editing.english}
-          onChange={e => setEditing({ ...editing, english: e.target.value })}
-          required
+        <input type="text" style={fieldStyle} placeholder="English name"
+          required value={editing.english}
+          onChange={(e) => setEditing({ ...editing, english: e.target.value })}
         />
 
-        <input
-          type="text"
-          className="border p-2 rounded w-full"
-          placeholder="French name"
-          value={editing.french}
-          onChange={e => setEditing({ ...editing, french: e.target.value })}
-          required
+        <input type="text" style={fieldStyle} placeholder="French name"
+          required value={editing.french}
+          onChange={(e) => setEditing({ ...editing, french: e.target.value })}
         />
 
-        <input
-          type="text"
-          className="border p-2 rounded w-full"
-          placeholder="Japanese name"
-          value={editing.japanese}
-          onChange={e => setEditing({ ...editing, japanese: e.target.value })}
-          required
+        <input type="text" style={fieldStyle} placeholder="Japanese name"
+          required value={editing.japanese}
+          onChange={(e) => setEditing({ ...editing, japanese: e.target.value })}
         />
 
         <select
-          className="border p-2 rounded w-full"
+          style={fieldStyle}
           value={editing.category}
-          onChange={e => setEditing({ ...editing, category: e.target.value })}
+          onChange={(e) => setEditing({ ...editing, category: e.target.value })}
         >
-          {CATEGORIES.map(c => (
+          {CATEGORIES.map((c) => (
             <option key={c.id} value={c.id}>{c.label}</option>
           ))}
         </select>
 
         <select
-          className="border p-2 rounded w-full"
+          style={fieldStyle}
           value={editing.capture}
-          onChange={e => setEditing({ ...editing, capture: e.target.value })}
+          onChange={(e) => setEditing({ ...editing, capture: e.target.value })}
         >
-          {CAPTURE_LEVELS.map(c => (
+          {CAPTURE_LEVELS.map((c) => (
             <option key={c.id} value={c.id}>{c.label}</option>
           ))}
         </select>
+      </div>
 
-        {/* ---------------- LOCATIONS ---------------- */}
-        <h3 className="font-semibold text-lg">Locations</h3>
+      {/* MIDDLE COLUMN */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+        <input type="date" style={fieldStyle}
+          value={editing.date}
+          onChange={(e) => setEditing({ ...editing, date: e.target.value })}
+        />
 
+        <textarea
+          style={{ ...fieldStyle, minHeight: "150px" }}
+          placeholder="Notes"
+          value={editing.notes}
+          onChange={(e) => setEditing({ ...editing, notes: e.target.value })}
+        />
+
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          style={fieldStyle}
+          onChange={(e) => handleImageUpload(e.target.files[0])}
+        />
+
+        <input
+          type="url"
+          style={fieldStyle}
+          placeholder="Info link (https://example.com)"
+          value={editing.infoLink || ""}
+          onChange={(e) => setEditing({ ...editing, infoLink: e.target.value })}
+        />
+      </div>
+
+      {/* RIGHT COLUMN (LOCATIONS) */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
         {editing.locations.map((loc, index) => (
-          <div key={index} className="border p-3 rounded space-y-2 bg-gray-50">
-
+          <div
+            key={index}
+            style={{
+              border: "1px solid #ddd",
+              padding: "10px",
+              borderRadius: "8px",
+              background: "rgba(255,255,255,0.1)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px"
+            }}
+          >
             <input
               type="text"
-              className="border p-2 rounded w-full"
+              style={fieldStyle}
               placeholder="Country"
               value={loc.country}
               onChange={(e) => handleLocationChange(index, "country", e.target.value)}
@@ -104,7 +174,7 @@ export default function EntryForm({ editing, setEditing, onSubmit, onCancel, han
 
             <input
               type="text"
-              className="border p-2 rounded w-full"
+              style={fieldStyle}
               placeholder="Region"
               value={loc.region}
               onChange={(e) => handleLocationChange(index, "region", e.target.value)}
@@ -112,7 +182,7 @@ export default function EntryForm({ editing, setEditing, onSubmit, onCancel, han
 
             <input
               type="text"
-              className="border p-2 rounded w-full"
+              style={fieldStyle}
               placeholder="Sub-region"
               value={loc.subRegion}
               onChange={(e) => handleLocationChange(index, "subRegion", e.target.value)}
@@ -120,58 +190,53 @@ export default function EntryForm({ editing, setEditing, onSubmit, onCancel, han
 
             <button
               type="button"
-              className="px-3 py-1 bg-red-500 text-white rounded"
               onClick={() => removeLocation(index)}
+              style={{
+                ...buttonStyle,
+                background: "#d9534f",
+                color: "white",
+                alignSelf: "flex-start"
+              }}
             >
               Remove location
             </button>
-
           </div>
         ))}
 
-<button
-  type="button"
-  className="px-3 py-2 bg-green-600 text-white rounded"
-  onClick={addLocation}
->
-  + Add location
-</button>
+        <button
+          type="button"
+          onClick={addLocation}
+          style={{
+            ...buttonStyle,
+            background: "#4caf50",
+            color: "white",
+            alignSelf: "flex-start"
+          }}
+        >
+          + Add location
+        </button>
+      </div>
 
-        <input
-          type="date"
-          className="border p-2 rounded w-full"
-          value={editing.date}
-          onChange={e => setEditing({ ...editing, date: e.target.value })}
-        />
+      {/* ACTION BUTTONS */}
+      <div
+        style={{
+          gridColumn: "1 / -1",
+          display: "flex",
+          justifyContent: "flex-end",
+          gap: "10px",
+          marginTop: "10px"
+        }}
+      >
+        <button type="button" onClick={onCancel} style={{ ...buttonStyle, background: "#ccc" }}>
+          Cancel
+        </button>
 
-        <textarea
-          className="border p-2 rounded w-full"
-          placeholder="Notes"
-          value={editing.notes}
-          onChange={e => setEditing({ ...editing, notes: e.target.value })}
-        />
+        <button type="submit" style={{ ...buttonStyle, background: "#1e40af", color: "white" }}>
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+);
 
-        <input
-          type="file"
-          className="border p-2 rounded w-full"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={e => handleImageUpload(e.target.files[0])}
-        />
-
-        <input
-          type="url"
-          className="border p-2 rounded w-full"
-          placeholder="Info link (https://example.com)"
-          value={editing.infoLink || ""}
-          onChange={e => setEditing({ ...editing, infoLink: e.target.value })}
-        />
-
-        <div className="flex gap-2 pt-2 justify-end">
-          <button type="button" className="px-3 py-2 bg-gray-300 rounded" onClick={onCancel}>Cancel</button>
-          <button type="submit" className="px-3 py-2 bg-blue-600 text-white rounded">Save</button>
-        </div>
-      </form>
-    </div>
-  );
 }
