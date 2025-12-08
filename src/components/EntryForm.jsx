@@ -1,106 +1,177 @@
-import React from "react";
+import React, { useRef } from 'react';
+import { CATEGORIES, CAPTURE_LEVELS } from '../data/Constants';
 
-export default function EntryForm({ entry, onChange, onSave, onCancel }) {
-  const handleFieldChange = (field, value) => {
-    onChange({ ...entry, [field]: value });
-  };
 
+export default function EntryForm({ editing, setEditing, onSubmit, onCancel, handleImageUpload }) {
+  const fileInputRef = useRef();
+
+  // ---------------- LOCATION HANDLERS ----------------
   const handleLocationChange = (index, field, value) => {
-    const updatedLocations = entry.locations.map((loc, i) =>
+    const updated = editing.locations.map((loc, i) =>
       i === index ? { ...loc, [field]: value } : loc
     );
-    onChange({ ...entry, locations: updatedLocations });
+    setEditing({ ...editing, locations: updated });
   };
 
   const addLocation = () => {
-    onChange({
-      ...entry,
-      locations: [...entry.locations, { country: "", region: "", subRegion: "" }]
+    setEditing({
+      ...editing,
+      locations: [...editing.locations, { country: "", region: "", subRegion: "" }]
     });
   };
 
   const removeLocation = (index) => {
-    const updatedLocations = entry.locations.filter((_, i) => i !== index);
-    onChange({ ...entry, locations: updatedLocations });
+    setEditing({
+      ...editing,
+      locations: editing.locations.filter((_, i) => i !== index)
+    });
   };
 
   return (
-    <div className="entry-form">
-      <h2>{entry.id ? "Edit Entry" : "New Entry"}</h2>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
+      <form onSubmit={onSubmit} className="bg-white p-6 rounded shadow w-full max-w-xl space-y-3">
+        <h2 className="text-xl font-bold">{editing.id ? 'Edit entry' : 'Add entry'}</h2>
 
-      {/* Example of your normal fields */}
-      <label>Latin name</label>
-      <input
-        type="text"
-        value={entry.latin}
-        onChange={(e) => handleFieldChange("latin", e.target.value)}
-      />
+        <input
+          type="text"
+          className="border p-2 rounded w-full"
+          placeholder="Scientific name"
+          value={editing.latin}
+          onChange={e => setEditing({ ...editing, latin: e.target.value })}
+          required
+        />
 
-      <label>French name</label>
-      <input
-        type="text"
-        value={entry.french}
-        onChange={(e) => handleFieldChange("french", e.target.value)}
-      />
+        <input
+          type="text"
+          className="border p-2 rounded w-full"
+          placeholder="English name"
+          value={editing.english}
+          onChange={e => setEditing({ ...editing, english: e.target.value })}
+          required
+        />
 
-      <label>English name</label>
-      <input
-        type="text"
-        value={entry.english}
-        onChange={(e) => handleFieldChange("english", e.target.value)}
-      />
+        <input
+          type="text"
+          className="border p-2 rounded w-full"
+          placeholder="French name"
+          value={editing.french}
+          onChange={e => setEditing({ ...editing, french: e.target.value })}
+          required
+        />
 
-      {/* ------------------ LOCATIONS ------------------ */}
-      <h3>Locations</h3>
+        <input
+          type="text"
+          className="border p-2 rounded w-full"
+          placeholder="Japanese name"
+          value={editing.japanese}
+          onChange={e => setEditing({ ...editing, japanese: e.target.value })}
+          required
+        />
 
-      {entry.locations.map((loc, index) => (
-        <div key={index} className="location-block" style={{ border: "1px solid #ccc", padding: 8, marginBottom: 8 }}>
-          <label>Country</label>
-          <input
-            type="text"
-            value={loc.country}
-            onChange={(e) => handleLocationChange(index, "country", e.target.value)}
-          />
+        <select
+          className="border p-2 rounded w-full"
+          value={editing.category}
+          onChange={e => setEditing({ ...editing, category: e.target.value })}
+        >
+          {CATEGORIES.map(c => (
+            <option key={c.id} value={c.id}>{c.label}</option>
+          ))}
+        </select>
 
-          <label>Region</label>
-          <input
-            type="text"
-            value={loc.region}
-            onChange={(e) => handleLocationChange(index, "region", e.target.value)}
-          />
+        <select
+          className="border p-2 rounded w-full"
+          value={editing.capture}
+          onChange={e => setEditing({ ...editing, capture: e.target.value })}
+        >
+          {CAPTURE_LEVELS.map(c => (
+            <option key={c.id} value={c.id}>{c.label}</option>
+          ))}
+        </select>
 
-          <label>Sub-region</label>
-          <input
-            type="text"
-            value={loc.subRegion}
-            onChange={(e) => handleLocationChange(index, "subRegion", e.target.value)}
-          />
+        {/* ---------------- LOCATIONS ---------------- */}
+        <h3 className="font-semibold text-lg">Locations</h3>
 
-          <button
-            type="button"
-            onClick={() => removeLocation(index)}
-            style={{ marginTop: 4, backgroundColor: "#c55", color: "white" }}
-          >
-            Remove location
-          </button>
+        {editing.locations.map((loc, index) => (
+          <div key={index} className="border p-3 rounded space-y-2 bg-gray-50">
+
+            <input
+              type="text"
+              className="border p-2 rounded w-full"
+              placeholder="Country"
+              value={loc.country}
+              onChange={(e) => handleLocationChange(index, "country", e.target.value)}
+            />
+
+            <input
+              type="text"
+              className="border p-2 rounded w-full"
+              placeholder="Region"
+              value={loc.region}
+              onChange={(e) => handleLocationChange(index, "region", e.target.value)}
+            />
+
+            <input
+              type="text"
+              className="border p-2 rounded w-full"
+              placeholder="Sub-region"
+              value={loc.subRegion}
+              onChange={(e) => handleLocationChange(index, "subRegion", e.target.value)}
+            />
+
+            <button
+              type="button"
+              className="px-3 py-1 bg-red-500 text-white rounded"
+              onClick={() => removeLocation(index)}
+            >
+              Remove location
+            </button>
+
+          </div>
+        ))}
+
+<button
+  type="button"
+  className="px-3 py-2 bg-green-600 text-white rounded"
+  onClick={addLocation}
+>
+  + Add location
+</button>
+
+        <input
+          type="date"
+          className="border p-2 rounded w-full"
+          value={editing.date}
+          onChange={e => setEditing({ ...editing, date: e.target.value })}
+        />
+
+        <textarea
+          className="border p-2 rounded w-full"
+          placeholder="Notes"
+          value={editing.notes}
+          onChange={e => setEditing({ ...editing, notes: e.target.value })}
+        />
+
+        <input
+          type="file"
+          className="border p-2 rounded w-full"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={e => handleImageUpload(e.target.files[0])}
+        />
+
+        <input
+          type="url"
+          className="border p-2 rounded w-full"
+          placeholder="Info link (https://example.com)"
+          value={editing.infoLink || ""}
+          onChange={e => setEditing({ ...editing, infoLink: e.target.value })}
+        />
+
+        <div className="flex gap-2 pt-2 justify-end">
+          <button type="button" className="px-3 py-2 bg-gray-300 rounded" onClick={onCancel}>Cancel</button>
+          <button type="submit" className="px-3 py-2 bg-blue-600 text-white rounded">Save</button>
         </div>
-      ))}
-
-      <button
-        type="button"
-        onClick={addLocation}
-        style={{ marginBottom: 20, backgroundColor: "#5c5", color: "white" }}
-      >
-        + Add location
-      </button>
-
-      {/* ------------------ ACTIONS ------------------ */}
-      <div style={{ marginTop: 20 }}>
-        <button onClick={onSave}>Save</button>
-        <button onClick={onCancel} style={{ marginLeft: 8 }}>
-          Cancel
-        </button>
-      </div>
+      </form>
     </div>
   );
 }

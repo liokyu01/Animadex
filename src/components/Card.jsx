@@ -138,21 +138,39 @@ if (selectedLanguage === "latin") {
           marginTop: "8px",
           marginBottom: "12px",
           fontSize: "14px",
-          display: "flex",
-          alignItems: "center",
           backgroundColor: lighterBgColor,
-          padding: "4px 8px",
+          padding: "6px 10px",
           borderRadius: "8px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",   // ← ensures left alignment
+          gap: "4px"
         }}
       >
-        <img src={locationIcon} width={18} height={18} style={{ marginRight: "8px" }} />
-        <span>
-          {entry.locations
-            .map(loc =>
-              [loc.country, loc.region, loc.subRegion].filter(Boolean).join(" · ")
-            )
-            .join(" | ")}
-        </span>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img src={locationIcon} width={18} height={18} style={{ marginRight: "8px" }} />
+          <span style={{ fontWeight: "bold" }}>Locations</span>
+        </div>
+
+        {entry.locations.length === 0 && (
+          <span style={{ opacity: 0.6, marginLeft: 26 }}>No location</span>
+        )}
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "2px",
+            marginLeft: 26,
+            textAlign: "left"          // ← ensures left text alignment
+          }}
+        >
+          {entry.locations.map((loc, i) => (
+            <span key={i}>
+              {[loc.country, loc.region, loc.subRegion].filter(Boolean).join(" · ")}
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* NOTES */}
