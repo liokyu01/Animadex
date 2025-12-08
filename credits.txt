@@ -1,1 +1,20 @@
-Test Credits
+
+<a href="https://www.flaticon.com/free-icons/delete" title="delete icons">Delete icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/frog" title="frog icons">Frog icons created by Anditii Creative - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/bird" title="bird icons">Bird icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/pencil" title="pencil icons">Pencil icons created by Pixel perfect - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/fish" title="fish icons">Fish icons created by PLANBSTUDIO - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/setting" title="setting icons">Setting icons created by Phoenix Group - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/wasp" title="wasp icons">Wasp icons created by Smashicons - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/location-pin" title="location pin icons">Location pin icons created by Pixel perfect - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/bear" title="bear icons">Bear icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/eye" title="eye icons">Eye icons created by Gregor Cresnar - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/more" title="more icons">More icons created by Anggara - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/question" title="question icons">Question icons created by meaicon - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/lizard" title="lizard icons">Lizard icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/bear" title="bear icons">Bear icons created by Ahmad Yafie - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/camera" title="camera icons">Camera icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/world" title="world icons">World icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/france" title="france icons">France icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/japan" title="japan icons">Japan icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/united-kingdom" title="united kingdom icons">United kingdom icons created by Freepik - Flaticon</a>
