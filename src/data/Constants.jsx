@@ -50,3 +50,4 @@ export const STORAGE_KEY = "visual_pokedex_entries_v1";
 
 export const iconHeight = 20;
 export const iconWidth = 20;
+

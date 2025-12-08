@@ -112,7 +112,7 @@ export default function App() {
       french: '',
       japanese: '',
       category: 'bird',
-      locations: [],
+      locations: [{ country: "", region: "", subRegion: "" }],
       capture: 'photo',
       date: new Date().toISOString().slice(0, 10),
       notes: '',
@@ -167,14 +167,30 @@ export default function App() {
   // --------------------
   // Filtered entries
   // --------------------
-  const filtered = entries.filter(e => {
-    const q = query.toLowerCase();
-    const matchesQuery = !query || [e.latin, e.english, e.french, e.japanese, ...(e.locations || [])]
-      .join(' ').toLowerCase().includes(q);
-    const matchesCategory = !categoryFilter || e.category === categoryFilter;
-    const matchesCapture = !captureFilter || e.capture === captureFilter;
-    return matchesQuery && matchesCategory && matchesCapture;
-  });
+const filtered = entries.filter(e => {
+  const q = query.toLowerCase();
+
+  // Convert each { country, region, subRegion } into a string
+  const locationText = (e.locations || [])
+    .map(loc => `${loc.country} ${loc.region} ${loc.subRegion}`)
+    .join(" ");
+
+  const matchesQuery = !query || [
+    e.latin,
+    e.english,
+    e.french,
+    e.japanese,
+    locationText
+  ]
+    .join(" ")
+    .toLowerCase()
+    .includes(q);
+
+  const matchesCategory = !categoryFilter || e.category === categoryFilter;
+  const matchesCapture  = !captureFilter || e.capture === captureFilter;
+
+  return matchesQuery && matchesCategory && matchesCapture;
+});
 
   const categoryCounts = {};
   filtered.forEach(e => categoryCounts[e.category] = (categoryCounts[e.category] || 0) + 1);

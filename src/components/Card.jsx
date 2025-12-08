@@ -146,7 +146,13 @@ if (selectedLanguage === "latin") {
         }}
       >
         <img src={locationIcon} width={18} height={18} style={{ marginRight: "8px" }} />
-        <span>{entry.locations.join(", ")}</span>
+        <span>
+          {entry.locations
+            .map(loc =>
+              [loc.country, loc.region, loc.subRegion].filter(Boolean).join(" · ")
+            )
+            .join(" | ")}
+        </span>
       </div>
 
       {/* NOTES */}
