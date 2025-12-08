@@ -1,9 +1,12 @@
-import React from "react";
+
+import React, { useState, useEffect } from "react";
 import { CATEGORIES, CAPTURE_LEVELS } from "../data/Constants";
 import Filters from "./Filters";
 import CategoryStats from "./CategoryStats";
 import CaptureStats from "./CaptureStats";
 import BannerButtons from "./BannerButtons";
+
+import CreditsModal from "./CreditsModal";
 
 export default function Header({
   query,
@@ -19,6 +22,8 @@ export default function Header({
     selectedLanguage,
     setLanguage
 }) {
+const [showCredits, setShowCredits] = useState(false);
+
   return (
     <div
       style={{
@@ -59,6 +64,26 @@ export default function Header({
           fontSize: "14px",
         }}
       >
+
+        <button
+        onClick={() => setShowCredits(true)}
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          padding: "10px 14px",
+          borderRadius: "6px",
+          background: "#444",
+          color: "white",
+          cursor: "pointer",
+          zIndex: 1000
+        }}
+      >
+        Credits
+      </button>
+
+      <CreditsModal open={showCredits} onClose={() => setShowCredits(false)} />
+
         <CaptureStats
         captureCounts = {captureCounts}
         />
