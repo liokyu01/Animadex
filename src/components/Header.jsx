@@ -25,7 +25,8 @@ export default function Header({
   filterCountry,
   setFilterCountry,
   sortOrder,
-  setSortOrder
+  setSortOrder,
+  isAdmin
 }) {
 const [showCredits, setShowCredits] = useState(false);
 
@@ -93,7 +94,11 @@ const [showCredits, setShowCredits] = useState(false);
         Credits
       </button>
 
-      <CreditsModal open={showCredits} onClose={() => setShowCredits(false)} />
+      <CreditsModal 
+      open={showCredits} 
+      onClose={() => setShowCredits(false)}
+      isAdmin = {isAdmin}
+      />
 
         <CaptureStats
         captureCounts = {captureCounts}

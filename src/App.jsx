@@ -255,6 +255,7 @@ const filtered = entries.filter(e => {
             setFilterCountry={setFilterCountry}              
             sortOrder={sortOrder}
             setSortOrder={setSortOrder}
+            isAdmin = {isAdmin}
           />
         </div>
       )}

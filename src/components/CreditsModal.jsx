@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import creditsHtml from "../data/credits.html?raw";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase"; // your firestore init
-
-export default function CreditsModal({ open, onClose }) {
+export default function CreditsModal({ open, onClose, isAdmin }) {
   const [text, setText] = useState("");
+  const [editMode, setEditMode] = useState(false);
+  const [editBuffer, setEditBuffer] = useState("");
 
   useEffect(() => {
     if (!open) return;
@@ -28,14 +28,21 @@ export default function CreditsModal({ open, onClose }) {
 
   if (!open) return null;
 
-  // Detect if content contains ANY HTML tag
+  // Detect if HTML exists
   const isHtml = /<\/?[a-z][\s\S]*>/i.test(text);
 
-  // If HTML: force links to open in new tab
+  // Force external links to open in new tab
   const htmlWithNewTab =
     isHtml
       ? text.replace(/<a /g, '<a target="_blank" rel="noopener noreferrer" ')
       : null;
+
+  // Save the edited credits
+  async function saveChanges() {
+    await setDoc(doc(db, "credits", "main"), { html: editBuffer });
+    setText(editBuffer);
+    setEditMode(false);
+  }
 
   return (
     <div
@@ -65,41 +72,114 @@ export default function CreditsModal({ open, onClose }) {
       >
         <h2 style={{ marginTop: 0 }}>Credits</h2>
 
-        {isHtml ? (
-          <div
-            style={{
-              fontSize: "14px",
-              lineHeight: "1.4em",
-              wordBreak: "break-word",
-            }}
-            dangerouslySetInnerHTML={{ __html: htmlWithNewTab }}
-          />
+        {/* ---------- VIEW MODE ---------- */}
+        {!editMode ? (
+          isHtml ? (
+            <div
+              style={{
+                fontSize: "14px",
+                lineHeight: "1.4em",
+                wordBreak: "break-word",
+              }}
+              dangerouslySetInnerHTML={{ __html: htmlWithNewTab }}
+            />
+          ) : (
+            <pre
+              style={{
+                whiteSpace: "pre-wrap",
+                fontSize: "14px",
+                lineHeight: "1.4em",
+              }}
+            >
+              {text}
+            </pre>
+          )
         ) : (
-          <pre
+          /* ---------- EDIT MODE ---------- */
+          <textarea
+            value={editBuffer}
+            onChange={(e) => setEditBuffer(e.target.value)}
             style={{
-              whiteSpace: "pre-wrap",
+              display: "flex",
+              width: "96%",
+              minHeight: "300px",
+              fontFamily: "monospace",
               fontSize: "14px",
-              lineHeight: "1.4em",
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #ccc",
             }}
-          >
-            {text}
-          </pre>
+          />
         )}
 
-        <button
-          onClick={onClose}
-          style={{
-            marginTop: "20px",
-            padding: "8px 12px",
-            borderRadius: "6px",
-            border: "none",
-            background: "#1e40af",
-            color: "white",
-            cursor: "pointer",
-          }}
-        >
-          Close
-        </button>
+        {/* Buttons row */}
+        <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+          {!editMode ? (
+            <>
+            {isAdmin && (
+              <button
+                onClick={() => {
+                  setEditBuffer(text);
+                  setEditMode(true);
+                }}
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  border: "none",
+                  background: "#4b5563",
+                  color: "white",
+                  cursor: "pointer",
+                }}
+              >
+                Edit
+              </button>)}
+
+              <button
+                onClick={onClose}
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  border: "none",
+                  background: "#1e40af",
+                  color: "white",
+                  cursor: "pointer",
+                }}
+              >
+                Close
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={saveChanges}
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  border: "none",
+                  background: "#059669",
+                  color: "white",
+                  cursor: "pointer",
+                }}
+              >
+                Save
+              </button>
+
+              <button
+                onClick={() => setEditMode(false)}
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  border: "none",
+                  background: "#dc2626",
+                  color: "white",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
