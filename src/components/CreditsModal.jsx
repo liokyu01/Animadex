@@ -6,7 +6,7 @@ export default function CreditsModal({ open, onClose }) {
   useEffect(() => {
     if (!open) return;
 
-    const path = import.meta.env.BASE_URL + "/credits.html"; 
+    const path = import.meta.env.BASE_URL + "/Animadex/credits.html"; 
     fetch(path)
       .then((res) => res.text())
       .then((t) => setText(t))
