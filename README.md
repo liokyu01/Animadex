@@ -4,15 +4,12 @@ This project comes from my idea of merging my interests in computer science and 
 So far this project includes my encounters in Asia (Mostly Japan).
 The informations for each species is described as follow:
 - Category (mammal, bird, reptile...)
-- Caputre Level (Picture taken, Observed, Tracks observed)
+- Capture Level (Picture taken, Observed, Tracks observed)
 - A picture (500x500px) if taken or a pixelized picture (64x64px -> 500x500px no interpolation) if observed.
 - 4 Naming references : Latin/Scientific Name, English, French, Local (Japanese for now, Might change depending on the country)
-- Location(s) : One or several locations, if seen in many locations might only be "Japan" to avoid overcrowd. Locations are divided in 3 parts, Country, Region, Specific location (city, mountain, island)
+- Location(s) : One or several locations, if seen in many locations might only be "Japan" to avoid overcrowd. Locations are divided in 3 parts, Country, Region, Sub Region
 - Notes: if some are given
 
 # Todo:
-- Filter on Country, Region (Need to choose what to do in case of "all japan" species)
-- Sorting order
 - Better location display
-- Main card name language choice
 - Finish to add all species
