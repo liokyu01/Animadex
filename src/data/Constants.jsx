@@ -4,7 +4,7 @@ import birdIcon from "../assets/icons/bird.png";
 import mammalIcon from "../assets/icons/mammal.png";
 import reptileIcon from "../assets/icons/reptile.png";
 import amphibianIcon from "../assets/icons/amphibian.png";
-import insectIcon from "../assets/icons/insect.png";
+import arthropodeIcon from "../assets/icons/arthropodes.png";
 import fishIcon from "../assets/icons/fish.png";
 import otherIcon from "../assets/icons/other.png";
 
@@ -23,7 +23,7 @@ export const CATEGORIES = [
   { id: "mammal", label: "Mammal", icon: mammalIcon, color: "#9e2424ff" },
   { id: "reptile", label: "Reptile", icon: reptileIcon, color: "#1d7970ff" },
   { id: "amphibian", label: "Amphibian", icon: amphibianIcon, color: "#569153ff" },
-  { id: "insect", label: "Insect", icon: insectIcon, color: "#798727ff" },
+  { id: "arthropode", label: "Arthropode", icon: arthropodeIcon, color: "#798727ff" },
   { id: "fish", label: "Fish", icon: fishIcon, color: "#113c80ff" },
   { id: "other", label: "Other", icon: otherIcon, color: "#9e9e9eff" },
 ];
