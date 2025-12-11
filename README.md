@@ -11,8 +11,5 @@ The informations for each species is described as follow:
 - Notes: if some are given
 
 # Todo:
-- Filter on Country, Region (Need to choose what to do in case of "all japan" species)
-- Sorting order
 - Better location display
-- Main card name language choice
 - Finish to add all species
