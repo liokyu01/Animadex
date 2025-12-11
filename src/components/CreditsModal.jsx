@@ -1,15 +1,29 @@
 import React, { useEffect, useState } from "react";
 import creditsHtml from "../data/credits.html?raw";
 
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase"; // your firestore init
+
 export default function CreditsModal({ open, onClose }) {
   const [text, setText] = useState("");
 
-
   useEffect(() => {
-    if (open) {
-      // Load static HTML directly
-      setText(creditsHtml);
+    if (!open) return;
+
+    async function loadCredits() {
+      try {
+        const snap = await getDoc(doc(db, "credits", "main"));
+        if (snap.exists()) {
+          setText(snap.data().html);
+        } else {
+          setText("No credits found.");
+        }
+      } catch (err) {
+        setText("Could not load credits.");
+      }
     }
+
+    loadCredits();
   }, [open]);
 
   if (!open) return null;
