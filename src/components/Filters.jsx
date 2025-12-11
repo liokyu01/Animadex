@@ -113,16 +113,16 @@ export default function Filters({
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
             style={{
-            padding: "6px 10px",
-            borderRadius: "8px",
+            padding: "8px",
+            borderRadius: "6px",
             border: "1px solid #ccc",
             }}
         >
             <option value="name-asc">Name: A → Z</option>
             <option value="name-desc">Name: Z → A</option>
-            <option value="date-new">Date: Newest first</option>
-            <option value="date-old">Date: Oldest first</option>
-            <option value="category">Category</option>
+            <option value="date-new">Newest observations first</option>
+            <option value="date-old">Oldest observation first</option>
+            <option value="category">Category / Family</option>
 
         </select>
 

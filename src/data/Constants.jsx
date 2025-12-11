@@ -16,7 +16,7 @@ import tracksIcon from "../assets/icons/tracks.png";
 import flagW from "../assets/flags/world.png";
 import flagUK from "../assets/flags/uk.png";
 import flagFR from "../assets/flags/fr.png";
-import flagJP from "../assets/flags/jp.png";
+import flagJP from "../assets/flags/jp.png"; 
 
 export const CATEGORIES = [
   { id: "bird", label: "Bird", icon: birdIcon, color: "#436b85ff" },
