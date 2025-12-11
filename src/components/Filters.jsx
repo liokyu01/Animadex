@@ -11,8 +11,12 @@ export default function Filters({
   selectedLanguage,
   setLanguage,
   filterCountry,
-  setFilterCountry
+  setFilterCountry,
+  sortOrder,
+  setSortOrder
 }) {
+
+
     if (!entries || !Array.isArray(entries)) {
         return null;   // or return a loading state
     }
@@ -103,6 +107,24 @@ export default function Filters({
             </option>
           ))}
         </select>
+
+        {/* Sorting Order */}
+        <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            style={{
+            padding: "6px 10px",
+            borderRadius: "8px",
+            border: "1px solid #ccc",
+            }}
+        >
+            <option value="name-asc">Name: A → Z</option>
+            <option value="name-desc">Name: Z → A</option>
+            <option value="date-new">Date: Newest first</option>
+            <option value="date-old">Date: Oldest first</option>
+
+        </select>
+
       </div>
     </div>
   );

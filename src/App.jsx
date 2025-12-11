@@ -7,6 +7,8 @@ import BackupModal from "./components/BackupModal";
 import AdminMenu from "./components/AdminMenu";
 import { sampleEntries } from "./data/SampleEntries";
 import useAuth from "./hooks/useAuth";
+import { sortEntries } from "./utils/sorting";
+
 import {
   fetchEntriesCollection,
   saveEntryToFirestore,
@@ -29,6 +31,7 @@ export default function App() {
   const [isBannerVisible, setIsBannerVisible] = useState(true);
 
   const [selectedLanguage, setLanguage] = useState('latin');
+  const [sortOrder, setSortOrder] = useState("name-asc"); 
 
   const [backupProgress, setBackupProgress] = useState({
     uploading: false,
@@ -206,6 +209,9 @@ const filtered = entries.filter(e => {
   const captureCounts = {};
   filtered.forEach(e => captureCounts[e.capture] = (captureCounts[e.capture] || 0) + 1);
 
+  const sortedEntries = sortEntries(filtered, selectedLanguage, sortOrder);
+
+
   // --------------------
   // Render
   // --------------------
@@ -245,7 +251,9 @@ const filtered = entries.filter(e => {
             setLanguage={setLanguage}
             entries={entries}
             filterCountry={filterCountry}
-            setFilterCountry={setFilterCountry}
+            setFilterCountry={setFilterCountry}              
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
           />
         </div>
       )}
@@ -310,7 +318,7 @@ const filtered = entries.filter(e => {
           )}
 
           {/* CARDS */}
-          {filtered.map(e => (
+          {sortedEntries.map(e => (
             <React.Fragment key={e.id}>
               <Card 
               entry={e}

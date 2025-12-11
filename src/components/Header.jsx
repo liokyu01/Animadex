@@ -23,7 +23,9 @@ export default function Header({
   setLanguage,
   entries,
   filterCountry,
-  setFilterCountry
+  setFilterCountry,
+  sortOrder,
+  setSortOrder
 }) {
 const [showCredits, setShowCredits] = useState(false);
 
@@ -54,6 +56,8 @@ const [showCredits, setShowCredits] = useState(false);
           entries={entries}
           filterCountry={filterCountry}
           setFilterCountry={setFilterCountry}
+          sortOrder={sortOrder}
+          setSortOrder={setSortOrder}
         />
       
       <CategoryStats
