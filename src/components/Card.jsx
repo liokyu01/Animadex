@@ -174,18 +174,20 @@ if (selectedLanguage === "latin") {
       </div>
 
       {/* NOTES */}
-      <div
-        style={{
-          marginTop: "10px",
-          padding: "10px",
-          borderRadius: "10px",
-          backgroundColor: darkerBgColor,
-          fontSize: "14px",
-          lineHeight: "1.4",
-        }}
-      >
-        {entry.notes}
-      </div>
+      {entry.notes!="" &&(
+        <div
+          style={{
+            marginTop: "10px",
+            padding: "10px",
+            borderRadius: "10px",
+            backgroundColor: darkerBgColor,
+            fontSize: "14px",
+            lineHeight: "1.4",
+          }}
+        >
+          {entry.notes}
+        </div>
+      )}
 
       {/* ACTION BUTTONS UNDER CARD */}
     <div
