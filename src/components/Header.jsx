@@ -19,8 +19,11 @@ export default function Header({
   categoryCounts = {},
   captureCounts = {},
   setIsBannerVisible,
-    selectedLanguage,
-    setLanguage
+  selectedLanguage,
+  setLanguage,
+  entries,
+  filterCountry,
+  setFilterCountry
 }) {
 const [showCredits, setShowCredits] = useState(false);
 
@@ -39,6 +42,7 @@ const [showCredits, setShowCredits] = useState(false);
       }}
     >
         <Filters
+        
           query = {query}
           setQuery = {setQuery}
           categoryFilter = {categoryFilter}
@@ -47,6 +51,9 @@ const [showCredits, setShowCredits] = useState(false);
           setCaptureFilter = {setCaptureFilter}
           selectedLanguage = {selectedLanguage}
           setLanguage = {setLanguage}
+          entries={entries}
+          filterCountry={filterCountry}
+          setFilterCountry={setFilterCountry}
         />
       
       <CategoryStats

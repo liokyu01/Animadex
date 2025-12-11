@@ -19,8 +19,11 @@ export default function App() {
 
   const [entries, setEntries] = useState([]);
   const [query, setQuery] = useState('');
+  
   const [categoryFilter, setCategoryFilter] = useState('');
   const [captureFilter, setCaptureFilter] = useState('');
+  const [filterCountry, setFilterCountry] = useState("");
+
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [isBannerVisible, setIsBannerVisible] = useState(true);
@@ -32,6 +35,8 @@ export default function App() {
     uploaded: 0,
     total: 0
   });
+
+
 
   // Load entries on mount
   useEffect(() => {
@@ -188,8 +193,11 @@ const filtered = entries.filter(e => {
 
   const matchesCategory = !categoryFilter || e.category === categoryFilter;
   const matchesCapture  = !captureFilter || e.capture === captureFilter;
+  const matchesCountry =
+    !filterCountry ||
+    (e.locations || []).some(loc => loc.country === filterCountry);
 
-  return matchesQuery && matchesCategory && matchesCapture;
+  return matchesQuery && matchesCategory && matchesCapture && matchesCountry;
 });
 
   const categoryCounts = {};
@@ -235,6 +243,9 @@ const filtered = entries.filter(e => {
             setIsBannerVisible={setIsBannerVisible}
             selectedLanguage={selectedLanguage}
             setLanguage={setLanguage}
+            entries={entries}
+            filterCountry={filterCountry}
+            setFilterCountry={setFilterCountry}
           />
         </div>
       )}
@@ -288,7 +299,20 @@ const filtered = entries.filter(e => {
           {/* NEW ENTRY FORM */}
           {editing && editing.id === null && (
             <div style={{ gridColumn: "1 / -1" }}>
-              <EntryForm editing={editing} setEditing={setEditing} onSubmit={handleSubmit} onCancel={() => setEditing(null)} handleImageUpload={handleImageUpload} />
+              <EntryForm 
+              editing={editing}
+              setEditing={setEditing}
+              onSubmit={handleSubmit}
+              onCancel={() => setEditing(null)}
+              handleImageUpload={handleImageUpload} 
+              />
+
+              
+  entry={editing}
+  onChange={setEditing}
+  onSave={handleSubmit}
+  onCancel={() => setEditing(null)}
+  handleImageUpload={handleImageUpload}
             </div>
           )}
 
