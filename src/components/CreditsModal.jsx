@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
+import creditsHtml from "../data/credits.html?raw";
 
 export default function CreditsModal({ open, onClose }) {
   const [text, setText] = useState("");
 
-  useEffect(() => {
-    if (!open) return;
 
-    const path = import.meta.env.BASE_URL + "/Animadex/credits.html"; 
-    fetch(path)
-      .then((res) => res.text())
-      .then((t) => setText(t))
-      .catch(() => setText("Could not load credits.html"));
+  useEffect(() => {
+    if (open) {
+      // Load static HTML directly
+      setText(creditsHtml);
+    }
   }, [open]);
 
   if (!open) return null;
