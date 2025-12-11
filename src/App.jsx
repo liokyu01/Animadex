@@ -306,14 +306,7 @@ const filtered = entries.filter(e => {
               onCancel={() => setEditing(null)}
               handleImageUpload={handleImageUpload} 
               />
-
-              
-  entry={editing}
-  onChange={setEditing}
-  onSave={handleSubmit}
-  onCancel={() => setEditing(null)}
-  handleImageUpload={handleImageUpload}
-            </div>
+              </div>
           )}
 
           {/* CARDS */}
