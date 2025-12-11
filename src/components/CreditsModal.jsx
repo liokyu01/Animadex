@@ -6,11 +6,11 @@ export default function CreditsModal({ open, onClose }) {
   useEffect(() => {
     if (!open) return;
 
-    const path = import.meta.env.BASE_URL + "/credits.txt"; 
+    const path = import.meta.env.BASE_URL + "/credits.html"; 
     fetch(path)
       .then((res) => res.text())
       .then((t) => setText(t))
-      .catch(() => setText("Could not load credits.txt"));
+      .catch(() => setText("Could not load credits.html"));
   }, [open]);
 
   if (!open) return null;
