@@ -1,3 +1,5 @@
+import { CATEGORIES } from "../data/Constants";
+
 export function getSortingLocale(selectedLanguage) {
   switch (selectedLanguage) {
     case "french":  return "fr";
@@ -53,6 +55,37 @@ export function sortEntries(entries, selectedLanguage, sortMode) {
 
   if (sortMode === "date-new" || sortMode === "date-old")
     return sortEntriesByDate(entries, sortMode);
+  
+  if (sortMode === "category")
+    return sortByCategoryFamilyName(entries, selectedLanguage);
 
   return entries;
+}
+
+const categoryLabelMap = Object.fromEntries(
+  CATEGORIES.map(cat => [cat.id, cat.label])
+);
+
+function sortByCategoryFamilyName(entries, selectedLanguage) {
+  const locale = getSortingLocale(selectedLanguage);
+
+  return [...entries].sort((a, b) => {
+    const catA = categoryLabelMap[a.category] || "";
+    const catB = categoryLabelMap[b.category] || "";
+
+    // 1) Sort by category label
+    const catCmp = catA.localeCompare(catB, "en");
+    if (catCmp !== 0) return catCmp;
+
+    // 2) Sort by family (Latin)
+    const famA = a.family || "";
+    const famB = b.family || "";
+    const famCmp = famA.localeCompare(famB, "la"); 
+    if (famCmp !== 0) return famCmp;
+
+    // 3) Sort by species name in currently selected language
+    const nameA = getEntryName(a, selectedLanguage) || "";
+    const nameB = getEntryName(b, selectedLanguage) || "";
+    return nameA.localeCompare(nameB, locale);
+  });
 }

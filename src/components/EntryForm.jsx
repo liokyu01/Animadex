@@ -106,6 +106,11 @@ return (
             <option key={c.id} value={c.id}>{c.label}</option>
           ))}
         </select>
+        
+        <input type="text" style={fieldStyle} placeholder="Family"
+          required value={editing.family}
+          onChange={(e) => setEditing({ ...editing, family: e.target.value })}
+        />
 
         <select
           style={fieldStyle}

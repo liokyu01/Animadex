@@ -122,6 +122,7 @@ export default function Filters({
             <option value="name-desc">Name: Z → A</option>
             <option value="date-new">Date: Newest first</option>
             <option value="date-old">Date: Oldest first</option>
+            <option value="category">Category</option>
 
         </select>
 

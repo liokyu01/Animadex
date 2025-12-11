@@ -120,6 +120,7 @@ export default function App() {
       french: '',
       japanese: '',
       category: 'bird',
+      family:"",
       locations: [{ country: "", region: "", subRegion: "" }],
       capture: 'photo',
       date: new Date().toISOString().slice(0, 10),
