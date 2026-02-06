@@ -107,6 +107,29 @@ if (selectedLanguage === "latin") {
             boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
           }}
         />
+        
+        <button
+            onClick={() => {
+            if (entry.infoLink) window.open(entry.infoLink, "_blank");
+            }}
+            
+            >
+            <img src={questionIcon} 
+            width={40} 
+            height={40} 
+            style={{
+            position: "absolute",
+            bottom: "8px",
+            left: "8px",
+            background: "rgba(29, 153, 255, 0.85)",
+            padding: "4px",
+            borderRadius: "6px",
+            // border: "3px solid #000000",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
+            }}
+            alt="Info" />
+        </button>
+
       </div>
 
       {/* LANGUAGE GROUP */}
@@ -232,7 +255,7 @@ if (selectedLanguage === "latin") {
     >
         <img src={deleteIcon} width={24} height={24} alt="Delete" />
     </button>
-
+{/* 
     <button
         onClick={() => {
         if (entry.infoLink) window.open(entry.infoLink, "_blank");
@@ -250,7 +273,7 @@ if (selectedLanguage === "latin") {
         }}
     >
         <img src={questionIcon} width={24} height={24} alt="Info" />
-    </button>
+    </button> */}
     </div>
 
     </div>
