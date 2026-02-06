@@ -326,7 +326,8 @@ const filtered = entries.filter(e => {
               entry={e}
               onEdit={onEdit} 
               onDelete={onDelete} 
-              selectedLanguage={selectedLanguage}/>
+              selectedLanguage={selectedLanguage}
+              isAdmin={isAdmin}/>
               {editing && editing.id === e.id && (
                 <div style={{ gridColumn: "1 / -1" }}>
                   <EntryForm editing={editing} setEditing={setEditing} onSubmit={handleSubmit} onCancel={() => setEditing(null)} handleImageUpload={handleImageUpload} />

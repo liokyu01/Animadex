@@ -7,7 +7,7 @@ import questionIcon from "../assets/icons/question.png";
 import editIcon from "../assets/icons/edit.png";
 import deleteIcon from "../assets/icons/delete.png";
 
-export default function Card({ entry, onEdit, onDelete, selectedLanguage }) {
+export default function Card({ entry, onEdit, onDelete, selectedLanguage, isAdmin }) {
   const category = CATEGORIES.find(c => c.id === entry.category);
   const bgColor = category?.color || "#c91f1fff";
   const categoryIcon = category?.icon;
@@ -112,7 +112,6 @@ if (selectedLanguage === "latin") {
             onClick={() => {
             if (entry.infoLink) window.open(entry.infoLink, "_blank");
             }}
-            
             >
             <img src={questionIcon} 
             width={40} 
@@ -124,7 +123,6 @@ if (selectedLanguage === "latin") {
             background: "rgba(29, 153, 255, 0.85)",
             padding: "4px",
             borderRadius: "6px",
-            // border: "3px solid #000000",
             boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
             }}
             alt="Info" />
@@ -213,6 +211,7 @@ if (selectedLanguage === "latin") {
       )}
 
       {/* ACTION BUTTONS UNDER CARD */}
+    {isAdmin &&
     <div
     style={{
         marginTop: "12px",
@@ -222,60 +221,41 @@ if (selectedLanguage === "latin") {
         paddingTop: "12px",
     }}
     >
-    <button
-        onClick={() => onEdit(entry)}
-        style={{
-        width: "48px",
-        height: "48px",
-        borderRadius: "12px",
-        border: "3px solid #3b0a0a",
-        backgroundColor: "#f7d438",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "6px",
-        }}
-    >
-        <img src={editIcon} width={24} height={24} alt="Edit" />
-    </button>
+      <button
+          onClick={() => onEdit(entry)}
+          style={{
+          width: "48px",
+          height: "48px",
+          borderRadius: "12px",
+          border: "3px solid #3b0a0a",
+          backgroundColor: "#f7d438",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "6px",
+          }}
+      >
+          <img src={editIcon} width={24} height={24} alt="Edit" />
+      </button>
 
-    <button
-        onClick={() => onDelete(entry.id)}
-        style={{
-        width: "48px",
-        height: "48px",
-        borderRadius: "12px",
-        border: "3px solid #3b0a0a",
-        backgroundColor: "#e63939",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "6px",
-        }}
-    >
-        <img src={deleteIcon} width={24} height={24} alt="Delete" />
-    </button>
-{/* 
-    <button
-        onClick={() => {
-        if (entry.infoLink) window.open(entry.infoLink, "_blank");
-        }}
-        style={{
-        width: "48px",
-        height: "48px",
-        borderRadius: "12px",
-        border: "3px solid #3b0a0a",
-        backgroundColor: "#3b82f6", // blue for info
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "6px",
-        }}
-    >
-        <img src={questionIcon} width={24} height={24} alt="Info" />
-    </button> */}
+      <button
+          onClick={() => onDelete(entry.id)}
+          style={{
+          width: "48px",
+          height: "48px",
+          borderRadius: "12px",
+          border: "3px solid #3b0a0a",
+          backgroundColor: "#e63939",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "6px",
+          }}
+      >
+          <img src={deleteIcon} width={24} height={24} alt="Delete" />
+      </button>
     </div>
-
+    }
     </div>
   );
 }
