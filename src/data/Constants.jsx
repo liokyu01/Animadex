@@ -35,15 +35,15 @@ export const CAPTURE_LEVELS = [
 ];
 
 export const COUNTRIES = [
-  { id: "japan", label: "Japan", flagIcon: "../assets/flags/jp.png"},
-  { id: "singapore", label: "Singapore", flagIcon: "../assets/flags/sg.png"},
+  { id: "japan", label: "Japan", flagIcon: "../assets/flags/jp.png", language:"local"},
+  { id: "singapore", label: "Singapore", flagIcon: "../assets/flags/sg.png", language: "english"},
 ];
 
 export const NAMING_OPTION = [
   { id: "latin", label: "Scientific name", flagIcon:flagW},
   { id: "english", label: "English", flagIcon: flagUK},
   { id: "french", label: "French", flagIcon: flagFR},
-  { id: "japanese", label: "Local", flagIcon: flagJP},
+  { id: "local", label: "Local", flagIcon: flagJP},
 ];
 
 export const STORAGE_KEY = "visual_pokedex_entries_v1";

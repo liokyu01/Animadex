@@ -14,7 +14,7 @@ export function getEntryName(entry, selectedLanguage) {
   switch (selectedLanguage) {
     case "french":  return entry.french;
     case "english": return entry.english;
-    case "local":   return entry.japanese;
+    case "local":   return entry.local;
     case "latin":   return entry.latin;
     default:        return entry.english;
   }

@@ -23,7 +23,7 @@ export default function Card({ entry, onEdit, onDelete, selectedLanguage, isAdmi
   const topName =
   selectedLanguage === "french"   ? entry.french :
   selectedLanguage === "english"  ? entry.english :
-  selectedLanguage === "local" ? entry.japanese :
+  selectedLanguage === "local" ? entry.local :
   entry.latin;
 
 let languageList;

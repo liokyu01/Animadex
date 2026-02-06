@@ -92,9 +92,9 @@ return (
           onChange={(e) => setEditing({ ...editing, french: e.target.value })}
         />
 
-        <input type="text" style={fieldStyle} placeholder="Japanese name"
-          required value={editing.japanese}
-          onChange={(e) => setEditing({ ...editing, japanese: e.target.value })}
+        <input type="text" style={fieldStyle} placeholder="Local name"
+          required value={editing.local}
+          onChange={(e) => setEditing({ ...editing, local: e.target.value })}
         />
 
         <select

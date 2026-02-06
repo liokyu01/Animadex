@@ -118,7 +118,7 @@ export default function App() {
       latin: '',
       english: '',
       french: '',
-      japanese: '',
+      local: '',
       category: 'bird',
       family:"",
       locations: [{ country: "", region: "", subRegion: "" }],
@@ -188,7 +188,7 @@ const filtered = entries.filter(e => {
     e.latin,
     e.english,
     e.french,
-    e.japanese,
+    e.local,
     locationText
   ]
     .join(" ")

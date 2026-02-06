@@ -11,7 +11,7 @@ export interface Entry {
       latin: string,
       english: string,
       french: string,
-      japanese: string,
+      local: string,
       category: string,
       locations: LocationEntry[],
       capture: string,
