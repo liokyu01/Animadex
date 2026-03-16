@@ -33,9 +33,11 @@ const [showCredits, setShowCredits] = useState(false);
   return (
     <div
       style={{
-        backgroundColor: "#5a1a1aff",
+        backgroundColor: "rgb(77, 22, 22)",
+        
+        //background:"rgba(0,0,0,0.15)",
         width: "100%",
-        padding: "5px 12px 12px 12px",
+        padding: "12px",
         borderRadius: "12px",
         boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
         marginBottom: "0px",

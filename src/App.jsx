@@ -221,7 +221,7 @@ const filtered = entries.filter(e => {
        width: "100vw",
         minHeight: "100vh",
          boxSizing: "border-box",
-          backgroundColor: "#5a1a1aff"
+          backgroundColor: "#5a1a1aff",
       }}>
       {/* Backup progress modal */}
       <BackupModal {...backupProgress} />
@@ -229,14 +229,16 @@ const filtered = entries.filter(e => {
       {/* Sticky banner */}
       {isBannerVisible && (
         <div style={{
+          
            position: "sticky",
            top: 0, 
            zIndex: 1000, 
            maxWidth: "1200px", 
            margin: "0 auto", 
-           width: "100%", 
-           padding: "16px 50px", 
-           boxSizing: "border-box" }}>
+           width: "80%", 
+           padding: "16px", 
+           boxSizing: "border-box"
+            }}>
           <Header
             query={query}
             setQuery={setQuery}
@@ -270,7 +272,7 @@ const filtered = entries.filter(e => {
       )}
 
       {/* Header top bar */}
-      <div style={{ maxWidth: "1200px", margin: "0 auto", width: "100%", padding: "24px", boxSizing: "border-box",textAlign: "center" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", width: "100vw", padding: "24px", boxSizing: "border-box",textAlign: "center" }}>
         <div style={{ display: "flex",
            justifyContent: "space-between", 
       flexDirection: "row",
@@ -306,9 +308,10 @@ const filtered = entries.filter(e => {
 
         {/* Grid system */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "32px", justifyItems: "center", boxSizing: "border-box", overflowX: "hidden" }}>
+          
           {/* NEW ENTRY FORM */}
           {editing && editing.id === null && (
-            <div style={{ gridColumn: "1 / -1" }}>
+            <div style={{ gridColumn: "-1/1", width:"100%" }}>
               <EntryForm 
               editing={editing}
               setEditing={setEditing}

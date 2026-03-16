@@ -45,7 +45,7 @@ export default function EntryForm({
     cursor: "pointer"
   };
 return (
-  <div style={{ width: "100%", display: "flex", justifyContent: "center", marginTop: "20px" }}>
+  <div style={{  width : "100%", display: "flex", justifyContent: "center", marginTop: "20px" }}>
     <form
       onSubmit={onSubmit}
       style={{
@@ -58,7 +58,7 @@ return (
 
         /* ---- GRID FIX ---- */
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
         gap: "20px",
         alignItems: "start",
       }}
