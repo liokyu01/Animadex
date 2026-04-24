@@ -31,7 +31,7 @@ export default function App() {
   const [isBannerVisible, setIsBannerVisible] = useState(true);
 
   const [selectedLanguage, setLanguage] = useState('latin');
-  const [sortOrder, setSortOrder] = useState("name-asc"); 
+  const [sortOrder, setSortOrder] = useState("date-new"); 
 
   const [backupProgress, setBackupProgress] = useState({
     uploading: false,
